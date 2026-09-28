@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { complaintSchema } from "../schemas/zodSchemas";
 import { CategorySuggestionChip } from "./CategorySuggestionChip";
 import { api } from "../lib/api";
-import { Send, Upload, Sparkles, AlertCircle, CheckCircle2, X } from "lucide-react";
+import { Send, Upload, Sparkles, AlertCircle, CheckCircle2, X, ArrowRight, DoorOpen } from "lucide-react";
 import confetti from "canvas-confetti";
 
 export const ComplaintForm = ({
@@ -18,6 +18,7 @@ export const ComplaintForm = ({
   const [serverError, setServerError] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
   const debounceTimerRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -43,7 +44,6 @@ export const ComplaintForm = ({
 
   // AI Category Suggestion Debounce
   useEffect(() => {
-    // If category is already selected, or suggestion dismissed, or description too short
     if (watchedCategory || dismissedSuggestion || !watchedDescription || watchedDescription.length < 8) {
       setSuggestion(null);
       setIsSuggesting(false);
@@ -59,7 +59,7 @@ export const ComplaintForm = ({
           setSuggestion(result);
         }
       } catch (err) {
-        // Non-blocking, ignore silent error
+        // Non-blocking
       } finally {
         setIsSuggesting(false);
       }
@@ -70,7 +70,6 @@ export const ComplaintForm = ({
 
   const handleApplySuggestion = () => {
     if (suggestion) {
-      // Find category id corresponding to suggestion.category
       const match = categories.find(
         (c) => c.name.toLowerCase() === suggestion.category.toLowerCase()
       );
@@ -114,12 +113,19 @@ export const ComplaintForm = ({
 
   const handleDrop = (e) => {
     e.preventDefault();
+    setIsDragging(false);
     const file = e.dataTransfer.files?.[0];
     processFile(file);
   };
 
   const handleDragOver = (e) => {
     e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
   };
 
   const onFormSubmit = async (data) => {
@@ -134,11 +140,10 @@ export const ComplaintForm = ({
 
       const result = await api.complaints.create(payload);
       
-      // Celebrate submission
       try {
         confetti({
-          particleCount: 80,
-          spread: 70,
+          particleCount: 70,
+          spread: 60,
           origin: { y: 0.6 },
         });
       } catch (e) {}
@@ -158,10 +163,10 @@ export const ComplaintForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-5">
       {serverError && (
-        <div className="flex items-center gap-2.5 p-4 bg-rose-50 border border-rose-200 rounded-2xl text-xs text-rose-700">
-          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+        <div className="flex items-center gap-2.5 p-3.5 bg-rose-50 border border-rose-200/80 rounded-2xl text-xs text-rose-700 shadow-2xs">
+          <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-600" />
           <span>{serverError}</span>
         </div>
       )}
@@ -170,15 +175,18 @@ export const ComplaintForm = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Room Number */}
         <div>
-          <label className="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wider">
+          <label className="block text-[11px] font-bold text-slate-700 mb-1.5 uppercase tracking-wider">
             Room Number <span className="text-rose-500">*</span>
           </label>
-          <input
-            type="text"
-            placeholder="e.g. B-204"
-            {...register("room_number")}
-            className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-semibold"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="e.g. B-204"
+              {...register("room_number")}
+              className="w-full pl-9 pr-4 py-2.5 bg-slate-50/70 border border-slate-200/90 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all font-semibold"
+            />
+            <DoorOpen className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          </div>
           {errors.room_number && (
             <p className="mt-1 text-xs text-rose-600 font-medium">{errors.room_number.message}</p>
           )}
@@ -187,17 +195,17 @@ export const ComplaintForm = ({
         {/* Category Dropdown (Optional with AI assist) */}
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+            <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">
               Category <span className="text-slate-400 font-normal">(Optional)</span>
             </label>
-            <span className="text-[11px] text-indigo-600 font-medium flex items-center gap-1">
+            <span className="text-[11px] text-indigo-600 font-semibold flex items-center gap-1">
               <Sparkles className="w-3 h-3" />
-              AI auto-detects
+              AI auto-triage
             </span>
           </div>
           <select
             {...register("category_id")}
-            className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-slate-800 cursor-pointer"
+            className="w-full px-3.5 py-2.5 bg-slate-50/70 border border-slate-200/90 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all font-medium text-slate-800 cursor-pointer"
           >
             <option value="">Let Gemini AI Triage It</option>
             {categories.map((cat) => (
@@ -215,16 +223,16 @@ export const ComplaintForm = ({
       {/* Description */}
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-            Complaint Description <span className="text-rose-500">*</span>
+          <label className="block text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+            Issue Description <span className="text-rose-500">*</span>
           </label>
-          <span className="text-xs text-slate-400">Min 10 characters</span>
+          <span className="text-[11px] text-slate-400 font-medium">Min 10 characters</span>
         </div>
         <textarea
           rows={4}
-          placeholder="Please be specific: What is broken? Where is it located? How urgent is it?"
+          placeholder="Please be specific: What is broken? Where is it located? Is water or electricity involved?"
           {...register("description")}
-          className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all leading-relaxed"
+          className="w-full p-4 bg-slate-50/70 border border-slate-200/90 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 focus:bg-white transition-all leading-relaxed placeholder:text-slate-400"
         />
         {errors.description && (
           <p className="mt-1 text-xs text-rose-600 font-medium">{errors.description.message}</p>
@@ -244,12 +252,12 @@ export const ComplaintForm = ({
 
       {/* Photo Evidence Dropzone/Input */}
       <div>
-        <label className="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wider">
+        <label className="block text-[11px] font-bold text-slate-700 mb-1.5 uppercase tracking-wider">
           Photo Evidence <span className="text-slate-400 font-normal">(Optional)</span>
         </label>
 
         {previewUrl ? (
-          <div className="relative flex items-center gap-3 p-3 bg-slate-50 border border-slate-200 rounded-2xl">
+          <div className="relative flex items-center gap-3 p-3 bg-slate-50/80 border border-slate-200 rounded-2xl shadow-2xs">
             <div className="w-14 h-14 rounded-xl overflow-hidden bg-slate-200 flex-shrink-0 border border-slate-300">
               <img
                 src={previewUrl}
@@ -259,16 +267,16 @@ export const ComplaintForm = ({
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-semibold text-slate-800 truncate">
-                {selectedFile?.name || "Attached Photo"}
+                {selectedFile?.name || "Attached Photo Evidence"}
               </p>
               <p className="text-[11px] text-slate-400">
-                {selectedFile?.size ? `${Math.round(selectedFile.size / 1024)} KB` : "Image selected"}
+                {selectedFile?.size ? `${Math.round(selectedFile.size / 1024)} KB` : "Image preview"}
               </p>
             </div>
             <button
               type="button"
               onClick={handleRemoveFile}
-              className="p-1.5 rounded-lg bg-slate-200 hover:bg-rose-100 hover:text-rose-600 text-slate-600 transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg bg-slate-200/70 hover:bg-rose-100 hover:text-rose-600 text-slate-600 transition-colors cursor-pointer"
               title="Remove photo"
             >
               <X className="w-4 h-4" />
@@ -278,8 +286,13 @@ export const ComplaintForm = ({
           <div
             onDrop={handleDrop}
             onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
             onClick={() => fileInputRef.current?.click()}
-            className="border-2 border-dashed border-slate-200 hover:border-indigo-400 bg-slate-50/60 hover:bg-slate-50 rounded-2xl p-5 text-center cursor-pointer transition-all flex flex-col items-center justify-center space-y-2 group"
+            className={`border-2 border-dashed rounded-2xl p-5 text-center cursor-pointer transition-all flex flex-col items-center justify-center space-y-2 group ${
+              isDragging
+                ? "border-indigo-500 bg-indigo-50/50"
+                : "border-slate-200/90 hover:border-indigo-400 bg-slate-50/50 hover:bg-slate-50"
+            }`}
           >
             <input
               ref={fileInputRef}
@@ -288,7 +301,7 @@ export const ComplaintForm = ({
               className="hidden"
               onChange={handleFileChange}
             />
-            <div className="p-2.5 rounded-full bg-indigo-50 text-indigo-600 group-hover:scale-105 transition-transform">
+            <div className="p-2.5 rounded-xl bg-indigo-50/80 border border-indigo-100/80 text-indigo-600 group-hover:scale-105 transition-all">
               <Upload className="w-5 h-5" />
             </div>
             <div>
@@ -309,17 +322,18 @@ export const ComplaintForm = ({
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-sm shadow-lg shadow-indigo-600/20 transition-all disabled:opacity-50 cursor-pointer"
+        className="group w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 active:from-indigo-700 text-white font-semibold text-sm shadow-soft shadow-indigo-600/25 transition-all duration-200 disabled:opacity-50 cursor-pointer"
       >
         {isSubmitting ? (
-          <span>Filing Complaint & Initiating 24h SLA...</span>
+          <span>Filing Grievance & Starting 24h SLA...</span>
         ) : (
           <>
-            <Send className="w-4 h-4" />
-            <span>Submit Complaint to Public Board</span>
+            <span>Submit Grievance to Board</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </>
         )}
       </button>
     </form>
   );
 };
+

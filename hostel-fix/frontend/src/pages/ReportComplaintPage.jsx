@@ -29,54 +29,63 @@ export const ReportComplaintPage = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-10 space-y-6">
-      <Link
-        to="/"
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-indigo-600 transition-colors"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        <span>Back to Complaint Board</span>
-      </Link>
+    <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50/50 bg-dot-grid py-8 sm:py-12">
+      <div className="ambient-gradient-radial absolute inset-0 pointer-events-none" />
 
-      {/* Header */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-3">
-        <div className="flex items-center gap-2">
-          <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl">
-            <ShieldCheck className="w-5 h-5" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-slate-900 tracking-tight">
-              Report a Hostel / Mess Issue
-            </h1>
-            <p className="text-xs text-slate-500">
-              Submit your maintenance or dining grievance. An immutable audit record will be created.
-            </p>
-          </div>
-        </div>
+      <div className="relative max-w-2xl mx-auto px-4 sm:px-6 space-y-6">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-indigo-600 transition-colors"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Back to Complaint Board</span>
+        </Link>
 
-        {/* SLA Notice */}
-        <div className="p-3 bg-indigo-50/70 border border-indigo-100 rounded-2xl flex items-center gap-2.5 text-xs text-indigo-900">
-          <Clock className="w-4 h-4 text-indigo-600 flex-shrink-0" />
-          <span>
-            <strong>24-Hour Resolution SLA:</strong> Complaints not addressed within 24 hours are automatically escalated to the Warden.
-          </span>
-        </div>
-
-        {/* Form */}
-        <div className="pt-4 border-t border-slate-100">
-          {loading ? (
-            <div className="py-12 flex justify-center">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent"></div>
+        {/* Card Header & Form */}
+        <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-card space-y-5">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-600 text-white flex items-center justify-center shadow-soft shadow-indigo-600/20">
+              <ShieldCheck className="w-5 h-5" />
             </div>
-          ) : (
-            <ComplaintForm
-              initialRoomNumber={user?.room_number || ""}
-              categories={categories}
-              onSubmitSuccess={handleSuccess}
-            />
-          )}
+            <div>
+              <h1 className="text-xl font-bold text-slate-900 tracking-tight">
+                Report a Hostel / Mess Issue
+              </h1>
+              <p className="text-xs text-slate-500">
+                Submit maintenance grievances with instant AI categorization & 24h SLA escalation.
+              </p>
+            </div>
+          </div>
+
+          {/* SLA Notice */}
+          <div className="p-3 bg-indigo-50/70 border border-indigo-200/70 rounded-2xl flex items-center gap-2.5 text-xs text-indigo-900 shadow-2xs">
+            <span className="relative flex h-2 w-2 flex-shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-600"></span>
+            </span>
+            <span className="leading-relaxed">
+              <strong>Automated 24-Hour SLA:</strong> Tickets remaining unresolved beyond 24 hours are autonomously escalated to Warden oversight.
+            </span>
+          </div>
+
+          {/* Form */}
+          <div className="pt-2 border-t border-slate-100">
+            {loading ? (
+              <div className="py-16 flex flex-col items-center justify-center space-y-2">
+                <div className="h-7 w-7 animate-spin rounded-full border-3 border-indigo-600 border-t-transparent"></div>
+                <p className="text-xs text-slate-500">Loading categories...</p>
+              </div>
+            ) : (
+              <ComplaintForm
+                initialRoomNumber={user?.room_number || ""}
+                categories={categories}
+                onSubmitSuccess={handleSuccess}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
 };
+

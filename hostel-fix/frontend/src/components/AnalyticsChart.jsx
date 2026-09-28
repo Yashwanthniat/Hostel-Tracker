@@ -48,7 +48,6 @@ export const AnalyticsChart = ({ data }) => {
     { name: "Reopened", value: data.totals?.reopened || 0 },
   ].filter((item) => item.value > 0);
 
-  // Standard complaint categories to ensure complete X-axis coverage
   const ALL_CATEGORIES = [
     "electrical",
     "plumbing",
@@ -67,7 +66,6 @@ export const AnalyticsChart = ({ data }) => {
     ])
   );
 
-  // Transform Resolution Hours: retain all categories, gracefully handle 0 hours
   const resolutionData = categoryKeys.map((cat) => {
     const rawHours = data.avgResolutionHoursByCategory?.[cat];
     const hours = typeof rawHours === "number" && rawHours > 0 ? Math.round(rawHours * 10) / 10 : 0;
@@ -81,16 +79,16 @@ export const AnalyticsChart = ({ data }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Category Volume Bar Chart */}
-      <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm">
-        <h3 className="text-sm font-bold text-slate-900 mb-1">Complaint Volume by Category</h3>
-        <p className="text-xs text-slate-500 mb-4">Total complaints logged per category</p>
+      <div className="bg-white/90 backdrop-blur-xl p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-card">
+        <h3 className="text-sm font-bold text-slate-900 mb-0.5 tracking-tight">Complaint Volume by Category</h3>
+        <p className="text-xs text-slate-500 mb-4 font-normal">Total grievance frequency logged per category</p>
         <div className="h-64 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={categoryData} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
               <XAxis dataKey="category" tick={{ fontSize: 11, fill: "#64748b" }} interval={0} angle={-25} textAnchor="end" />
               <YAxis tick={{ fontSize: 11, fill: "#64748b" }} allowDecimals={false} />
               <Tooltip
-                contentStyle={{ backgroundColor: "#0f172a", borderRadius: "12px", border: "none", color: "#fff", fontSize: "12px" }}
+                contentStyle={{ backgroundColor: "#0f172a", borderRadius: "14px", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontSize: "12px", boxShadow: "0 10px 25px -5px rgba(0,0,0,0.3)" }}
               />
               <Bar dataKey="count" radius={[6, 6, 0, 0]}>
                 {categoryData.map((entry, index) => (
@@ -103,12 +101,12 @@ export const AnalyticsChart = ({ data }) => {
       </div>
 
       {/* Status Distribution Donut Chart */}
-      <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm">
-        <h3 className="text-sm font-bold text-slate-900 mb-1">Status Distribution</h3>
-        <p className="text-xs text-slate-500 mb-4">Current state breakdown of all hostel tickets</p>
+      <div className="bg-white/90 backdrop-blur-xl p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-card">
+        <h3 className="text-sm font-bold text-slate-900 mb-0.5 tracking-tight">Status Distribution</h3>
+        <p className="text-xs text-slate-500 mb-4 font-normal">Current state breakdown of all hostel tickets</p>
         <div className="h-64 w-full flex items-center justify-center">
           {statusData.length === 0 ? (
-            <p className="text-xs text-slate-400">No status data available</p>
+            <p className="text-xs text-slate-400">No status telemetry available</p>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -126,7 +124,7 @@ export const AnalyticsChart = ({ data }) => {
                   ))}
                 </Pie>
                 <Tooltip
-                  contentStyle={{ backgroundColor: "#0f172a", borderRadius: "12px", border: "none", color: "#fff", fontSize: "12px" }}
+                  contentStyle={{ backgroundColor: "#0f172a", borderRadius: "14px", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontSize: "12px", boxShadow: "0 10px 25px -5px rgba(0,0,0,0.3)" }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -135,21 +133,23 @@ export const AnalyticsChart = ({ data }) => {
         {/* Legend */}
         <div className="flex flex-wrap items-center justify-center gap-3 mt-2 text-xs">
           {statusData.map((item) => (
-            <div key={item.name} className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: STATUS_COLORS[item.name] || "#64748b" }} />
-              <span className="text-slate-600 font-medium">{item.name}: {item.value}</span>
+            <div key={item.name} className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-50 border border-slate-200/60 shadow-2xs">
+              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: STATUS_COLORS[item.name] || "#64748b" }} />
+              <span className="text-slate-700 font-medium text-[11px]">{item.name}: <strong className="text-slate-900">{item.value}</strong></span>
             </div>
           ))}
         </div>
       </div>
 
       {/* Average Resolution Time by Category */}
-      <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm lg:col-span-2">
+      <div className="bg-white/90 backdrop-blur-xl p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-card lg:col-span-2">
         <div className="flex items-center justify-between mb-1">
-          <h3 className="text-sm font-bold text-slate-900">Average Resolution SLA (Hours)</h3>
-          <span className="text-[11px] font-medium text-slate-400">Target SLA: &lt; 24h</span>
+          <h3 className="text-sm font-bold text-slate-900 tracking-tight">Mean Resolution Turnaround by Category</h3>
+          <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/70">
+            Target SLA: &lt; 24h
+          </span>
         </div>
-        <p className="text-xs text-slate-500 mb-4">Mean turnaround time from ticket creation to resolved status</p>
+        <p className="text-xs text-slate-500 mb-4 font-normal">Mean elapsed hours from ticket submission to verified resolution</p>
         <div className="h-64 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={resolutionData} margin={{ top: 10, right: 10, left: -10, bottom: 20 }}>
@@ -162,8 +162,8 @@ export const AnalyticsChart = ({ data }) => {
               />
               <YAxis tick={{ fontSize: 11, fill: "#64748b" }} unit="h" allowDecimals={false} domain={[0, "auto"]} />
               <Tooltip
-                formatter={(val) => [val === 0 ? "0 hours (no resolved tickets)" : `${val} hours`, "Avg Resolution"]}
-                contentStyle={{ backgroundColor: "#0f172a", borderRadius: "12px", border: "none", color: "#fff", fontSize: "12px" }}
+                formatter={(val) => [val === 0 ? "0 hours (no resolved tickets)" : `${val} hours`, "Mean Resolution"]}
+                contentStyle={{ backgroundColor: "#0f172a", borderRadius: "14px", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontSize: "12px", boxShadow: "0 10px 25px -5px rgba(0,0,0,0.3)" }}
               />
               <Bar dataKey="hours" radius={[6, 6, 0, 0]}>
                 {resolutionData.map((entry, index) => (
@@ -177,3 +177,4 @@ export const AnalyticsChart = ({ data }) => {
     </div>
   );
 };
+
