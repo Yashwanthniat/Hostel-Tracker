@@ -10,29 +10,56 @@ import {
   Armchair, 
   HelpCircle,
   Clock, 
-  User, 
   DoorOpen,
   ArrowRight,
   Image as ImageIcon
 } from "lucide-react";
 
-export const ComplaintCard = ({ complaint, onQuickAction }) => {
-  const getCategoryIcon = (categoryName) => {
+export const ComplaintCard = ({ complaint }) => {
+  const getCategoryConfig = (categoryName) => {
     switch (categoryName?.toLowerCase()) {
       case "electrical":
-        return <Zap className="w-3.5 h-3.5 text-amber-500" />;
+        return {
+          icon: Zap,
+          bg: "bg-amber-50 text-amber-800 border-amber-200/60",
+          iconColor: "text-amber-500",
+        };
       case "plumbing":
-        return <Droplet className="w-3.5 h-3.5 text-blue-500" />;
+        return {
+          icon: Droplet,
+          bg: "bg-sky-50 text-sky-800 border-sky-200/60",
+          iconColor: "text-sky-500",
+        };
       case "mess":
-        return <Utensils className="w-3.5 h-3.5 text-orange-500" />;
+        return {
+          icon: Utensils,
+          bg: "bg-orange-50 text-orange-800 border-orange-200/60",
+          iconColor: "text-orange-500",
+        };
       case "cleaning":
-        return <Sparkles className="w-3.5 h-3.5 text-teal-500" />;
+        return {
+          icon: Sparkles,
+          bg: "bg-teal-50 text-teal-800 border-teal-200/60",
+          iconColor: "text-teal-500",
+        };
       case "internet":
-        return <Wifi className="w-3.5 h-3.5 text-purple-500" />;
+        return {
+          icon: Wifi,
+          bg: "bg-purple-50 text-purple-800 border-purple-200/60",
+          iconColor: "text-purple-500",
+        };
       case "furniture":
-        return <Armchair className="w-3.5 h-3.5 text-emerald-500" />;
+        return {
+          icon: Armchair,
+          bg: "bg-emerald-50 text-emerald-800 border-emerald-200/60",
+          iconColor: "text-emerald-500",
+        };
       default:
-        return <HelpCircle className="w-3.5 h-3.5 text-slate-500" />;
+        return {
+          icon: HelpCircle,
+          bg: "bg-slate-50 text-slate-700 border-slate-200/60",
+          iconColor: "text-slate-400",
+        };
     }
   };
 
@@ -49,24 +76,30 @@ export const ComplaintCard = ({ complaint, onQuickAction }) => {
   };
 
   const isOverdue = complaint.escalation_level > 0;
+  const catConfig = getCategoryConfig(complaint.category_name);
+  const CatIcon = catConfig.icon;
+
+  const studentInitial = complaint.student_name ? complaint.student_name.trim().charAt(0).toUpperCase() : "S";
 
   return (
     <div
-      className={`group relative bg-white rounded-2xl p-5 border transition-all duration-200 hover:shadow-lg ${
+      className={`group relative bg-white/90 backdrop-blur-sm rounded-2xl p-4 sm:p-5 border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card cursor-pointer ${
         isOverdue 
-          ? "border-rose-300 ring-1 ring-rose-200/60" 
-          : "border-slate-200/80 hover:border-slate-300"
+          ? "border-rose-300/80 ring-1 ring-rose-200/50 shadow-xs" 
+          : "border-slate-200/80 hover:border-slate-300/90 shadow-2xs"
       }`}
     >
       {/* Header Info */}
       <div className="flex items-start justify-between gap-2 mb-3">
         <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs font-semibold uppercase tracking-wider">
-            {getCategoryIcon(complaint.category_name)}
-            <span>{complaint.category_name || "General"}</span>
+          {/* Category Pill */}
+          <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-[11px] font-semibold tracking-tight ${catConfig.bg}`}>
+            <CatIcon className={`w-3 h-3 ${catConfig.iconColor}`} />
+            <span className="capitalize">{complaint.category_name || "General"}</span>
           </span>
 
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100/70 text-slate-600 text-xs font-medium">
+          {/* Room Pill */}
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100/80 text-slate-600 text-[11px] font-medium border border-slate-200/50">
             <DoorOpen className="w-3 h-3 text-slate-400" />
             <span>Room {complaint.room_number || "N/A"}</span>
           </span>
@@ -81,7 +114,7 @@ export const ComplaintCard = ({ complaint, onQuickAction }) => {
 
       {/* Description */}
       <Link to={`/complaints/${complaint.id}`} className="block group-hover:text-indigo-600 transition-colors">
-        <p className="text-sm font-medium text-slate-900 line-clamp-2 leading-relaxed mb-3">
+        <p className="text-sm font-semibold text-slate-800 line-clamp-2 leading-relaxed mb-3">
           {complaint.description}
         </p>
       </Link>
@@ -93,30 +126,38 @@ export const ComplaintCard = ({ complaint, onQuickAction }) => {
             href={complaint.photo_url}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-700 bg-indigo-50/70 px-2 py-1 rounded-md"
+            onClick={(e) => e.stopPropagation()}
+            className="inline-flex items-center gap-1.5 text-[11px] font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50/70 border border-indigo-100/80 px-2.5 py-1 rounded-xl transition-colors"
           >
             <ImageIcon className="w-3 h-3" />
-            <span>View Attachment</span>
+            <span>View Attachment Evidence</span>
           </a>
         </div>
       )}
 
       {/* Footer Info */}
       <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-        <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-1">
-            <User className="w-3 h-3 text-slate-400" />
-            <span className="truncate max-w-[100px]">{complaint.student_name}</span>
-          </span>
-          <span className="inline-flex items-center gap-1 text-slate-400">
-            <Clock className="w-3 h-3" />
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <div className="w-5 h-5 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-700 text-white flex items-center justify-center text-[10px] font-bold shadow-2xs flex-shrink-0">
+              {studentInitial}
+            </div>
+            <span className="truncate max-w-[110px] font-medium text-slate-700 text-[11px]">
+              {complaint.student_name}
+            </span>
+          </div>
+
+          <span className="text-slate-300">•</span>
+
+          <span className="inline-flex items-center gap-1 text-slate-400 text-[11px]">
+            <Clock className="w-3 h-3 text-slate-300" />
             <span>{formatDate(complaint.created_at)}</span>
           </span>
         </div>
 
         <Link
           to={`/complaints/${complaint.id}`}
-          className="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-indigo-600 group-hover:translate-x-0.5 transition-all"
+          className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 group-hover:translate-x-0.5 transition-all flex-shrink-0"
         >
           <span>Details</span>
           <ArrowRight className="w-3 h-3" />
@@ -125,3 +166,4 @@ export const ComplaintCard = ({ complaint, onQuickAction }) => {
     </div>
   );
 };
+

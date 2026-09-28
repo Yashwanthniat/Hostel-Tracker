@@ -38,6 +38,7 @@ export const api = {
   auth: {
     login: (credentials) => request("/api/auth/login", { method: "POST", body: JSON.stringify(credentials) }),
     signup: (userData) => request("/api/auth/signup", { method: "POST", body: JSON.stringify(userData) }),
+    logout: () => request("/api/auth/logout", { method: "POST" }),
     getMe: () => request("/api/auth/me"),
     updateProfile: (profile) => request("/api/auth/profile", { method: "PATCH", body: JSON.stringify(profile) }),
     getAllUsers: () => request("/api/auth/users"),

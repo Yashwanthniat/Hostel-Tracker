@@ -45,9 +45,17 @@ export const AuthProvider = ({ children }) => {
     return data.user;
   };
 
-  const logout = () => {
-    localStorage.removeItem("hostelfix_token");
-    setUser(null);
+  const logout = async () => {
+    try {
+      await api.auth.logout();
+    } catch (err) {
+      console.warn("Backend logout notification warning:", err.message);
+    } finally {
+      localStorage.removeItem("hostelfix_token");
+      sessionStorage.clear();
+      document.cookie = "hostelfix_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+      setUser(null);
+    }
   };
 
   const refreshUser = async () => {

@@ -77,6 +77,12 @@ router.post("/login", validate(loginSchema), async (req, res) => {
   }
 });
 
+// Logout / Destroy Session
+router.post("/logout", (req, res) => {
+  res.clearCookie("hostelfix_token", { path: "/" });
+  res.status(200).json({ message: "Session destroyed successfully" });
+});
+
 // Current User Profile
 router.get("/me", authenticate, async (req, res) => {
   try {

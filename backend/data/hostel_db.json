@@ -117,10 +117,10 @@
       "description": "Laundry issue : The clothes which are washed from the laundry are not completely cleaned still some of the stain remains on the clothes",
       "photo_url": null,
       "status": "IN_PROGRESS",
-      "escalation_level": 2,
+      "escalation_level": 3,
       "assigned_staff_id": "d0000000-0000-0000-0000-000000000002",
       "created_at": "2026-09-22T06:30:30.486Z",
-      "updated_at": "2026-09-26T05:51:53.885Z",
+      "updated_at": "2026-09-28T13:30:00.864Z",
       "resolved_at": null
     },
     {
@@ -143,10 +143,10 @@
       "description": "Ceiling fan sparking and vibrating dangerously on speed 3",
       "photo_url": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80",
       "status": "IN_PROGRESS",
-      "escalation_level": 3,
+      "escalation_level": 4,
       "assigned_staff_id": "d0000000-0000-0000-0000-000000000002",
       "created_at": "2026-09-21T12:09:12.329Z",
-      "updated_at": "2026-09-26T05:51:53.889Z",
+      "updated_at": "2026-09-28T13:30:00.870Z",
       "resolved_at": null
     },
     {
@@ -156,10 +156,10 @@
       "description": "Wash basin pipe leaking continuously under sink, soaking floor",
       "photo_url": null,
       "status": "OPEN",
-      "escalation_level": 4,
+      "escalation_level": 5,
       "assigned_staff_id": null,
       "created_at": "2026-09-20T18:09:12.329Z",
-      "updated_at": "2026-09-26T05:51:53.892Z",
+      "updated_at": "2026-09-28T13:30:00.894Z",
       "resolved_at": null
     },
     {
@@ -441,6 +441,33 @@
       "changed_by": "d0000000-0000-0000-0000-000000000003",
       "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 4. Flagged for Admin Warden.",
       "timestamp": "2026-09-26T05:51:53.892Z"
+    },
+    {
+      "id": "ee7244bd-848c-4974-9394-ef2ecf966f24",
+      "complaint_id": "be0b923f-2cbb-44d8-85cb-ed5db1ce85f8",
+      "old_status": "IN_PROGRESS",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 3. Flagged for Admin Warden.",
+      "timestamp": "2026-09-28T13:30:00.864Z"
+    },
+    {
+      "id": "282c9b24-9b69-4df5-a2a9-a841ed15e8b5",
+      "complaint_id": "c0000000-0000-0000-0000-000000000001",
+      "old_status": "IN_PROGRESS",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 4. Flagged for Admin Warden.",
+      "timestamp": "2026-09-28T13:30:00.870Z"
+    },
+    {
+      "id": "92cedd0e-7df0-4ace-9f4c-b566400887aa",
+      "complaint_id": "c0000000-0000-0000-0000-000000000002",
+      "old_status": "OPEN",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 5. Flagged for Admin Warden.",
+      "timestamp": "2026-09-28T13:30:00.894Z"
     }
   ]
 }
