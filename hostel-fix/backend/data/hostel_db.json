@@ -1,0 +1,446 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "electrical",
+      "default_staff_group": "Electrical Maintenance"
+    },
+    {
+      "id": 2,
+      "name": "plumbing",
+      "default_staff_group": "Plumbing & Water Supply"
+    },
+    {
+      "id": 3,
+      "name": "mess",
+      "default_staff_group": "Mess & Food Quality Committee"
+    },
+    {
+      "id": 4,
+      "name": "cleaning",
+      "default_staff_group": "Sanitation & Housekeeping"
+    },
+    {
+      "id": 5,
+      "name": "internet",
+      "default_staff_group": "IT & Network Support"
+    },
+    {
+      "id": 6,
+      "name": "furniture",
+      "default_staff_group": "Carpentry & Facilities"
+    },
+    {
+      "id": 7,
+      "name": "other",
+      "default_staff_group": "General Operations"
+    }
+  ],
+  "users": [
+    {
+      "id": "d0000000-0000-0000-0000-000000000001",
+      "email": "student@hostelfix.edu",
+      "password_hash": "$2a$10$/8jVUE8gLFAaXldEa.Tr4OHbSRqyCxFeID3Y1H1x8QaGTiynUgJmu",
+      "full_name": "Yashwanth",
+      "role": "student",
+      "room_number": "B-204",
+      "created_at": "2026-09-12T06:09:11.664Z"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000002",
+      "email": "staff@hostelfix.edu",
+      "password_hash": "$2a$10$lXuG.LbveSIisseMnEcaVu2/BYo89UCJp.E1UIfj/9sUrUiGD/RPi",
+      "full_name": "Marcus Vance",
+      "role": "staff",
+      "room_number": null,
+      "created_at": "2026-08-23T06:09:11.989Z"
+    },
+    {
+      "id": "d0000000-0000-0000-0000-000000000003",
+      "email": "admin@hostelfix.edu",
+      "password_hash": "$2a$10$ihb3zTA1h5Rjp2Ay66BG9.YIXEH6QMCGz3Du1CEddwTw7P7kKsg3i",
+      "full_name": "Dr. Sarah Jenkins (Warden)",
+      "role": "admin",
+      "room_number": "Warden Office",
+      "created_at": "2026-07-24T06:09:12.329Z"
+    },
+    {
+      "id": "9359451c-3fdb-4b4b-b631-d685dc08d3a2",
+      "email": "y02628790@gmail.com",
+      "password_hash": "$2a$10$KLlR/feqjyyqS59AIdcFbu/JPTjvcIb1lcN2ARyktNyRSIFINlhJy",
+      "full_name": "Yashwanth",
+      "role": "student",
+      "room_number": "333",
+      "created_at": "2026-09-22T06:32:44.401Z"
+    },
+    {
+      "id": "ad6f02ac-b555-4015-bd1b-840fc04ca68d",
+      "email": "santhosh12@gmail.com",
+      "password_hash": "$2a$10$1Cf5zugu/lTjnxu2lN3ox.41FbaW4dYj1ZYqyd0KqdhrLrDCJSXDG",
+      "full_name": "Santhosh",
+      "role": "admin",
+      "room_number": null,
+      "created_at": "2026-09-22T06:34:01.623Z"
+    }
+  ],
+  "complaints": [
+    {
+      "id": "e5a272d6-cf89-4c3e-9361-2aadd185b2e1",
+      "student_id": "d0000000-0000-0000-0000-000000000001",
+      "category_id": 6,
+      "description": "Study table leg collapsed and computer desk is wobbly",
+      "photo_url": null,
+      "status": "REOPENED",
+      "escalation_level": 0,
+      "assigned_staff_id": "d0000000-0000-0000-0000-000000000002",
+      "created_at": "2026-09-26T05:51:53.807Z",
+      "updated_at": "2026-09-26T05:51:53.864Z",
+      "resolved_at": null
+    },
+    {
+      "id": "87c79879-6286-4736-8ce7-ada5cf7f4a1d",
+      "student_id": "d0000000-0000-0000-0000-000000000001",
+      "category_id": 6,
+      "description": "Study table leg collapsed and computer desk is wobbly",
+      "photo_url": null,
+      "status": "REOPENED",
+      "escalation_level": 0,
+      "assigned_staff_id": "d0000000-0000-0000-0000-000000000002",
+      "created_at": "2026-09-26T05:20:44.656Z",
+      "updated_at": "2026-09-26T05:20:44.726Z",
+      "resolved_at": null
+    },
+    {
+      "id": "be0b923f-2cbb-44d8-85cb-ed5db1ce85f8",
+      "student_id": "d0000000-0000-0000-0000-000000000001",
+      "category_id": 7,
+      "description": "Laundry issue : The clothes which are washed from the laundry are not completely cleaned still some of the stain remains on the clothes",
+      "photo_url": null,
+      "status": "IN_PROGRESS",
+      "escalation_level": 2,
+      "assigned_staff_id": "d0000000-0000-0000-0000-000000000002",
+      "created_at": "2026-09-22T06:30:30.486Z",
+      "updated_at": "2026-09-26T05:51:53.885Z",
+      "resolved_at": null
+    },
+    {
+      "id": "e34c0385-f70b-4900-a198-deb14fa9855a",
+      "student_id": "d0000000-0000-0000-0000-000000000001",
+      "category_id": 6,
+      "description": "Study table leg collapsed and computer desk is wobbly",
+      "photo_url": null,
+      "status": "REOPENED",
+      "escalation_level": 0,
+      "assigned_staff_id": "d0000000-0000-0000-0000-000000000002",
+      "created_at": "2026-09-22T06:25:01.037Z",
+      "updated_at": "2026-09-22T06:25:01.095Z",
+      "resolved_at": null
+    },
+    {
+      "id": "c0000000-0000-0000-0000-000000000001",
+      "student_id": "d0000000-0000-0000-0000-000000000001",
+      "category_id": 1,
+      "description": "Ceiling fan sparking and vibrating dangerously on speed 3",
+      "photo_url": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80",
+      "status": "IN_PROGRESS",
+      "escalation_level": 3,
+      "assigned_staff_id": "d0000000-0000-0000-0000-000000000002",
+      "created_at": "2026-09-21T12:09:12.329Z",
+      "updated_at": "2026-09-26T05:51:53.889Z",
+      "resolved_at": null
+    },
+    {
+      "id": "c0000000-0000-0000-0000-000000000002",
+      "student_id": "d0000000-0000-0000-0000-000000000001",
+      "category_id": 2,
+      "description": "Wash basin pipe leaking continuously under sink, soaking floor",
+      "photo_url": null,
+      "status": "OPEN",
+      "escalation_level": 4,
+      "assigned_staff_id": null,
+      "created_at": "2026-09-20T18:09:12.329Z",
+      "updated_at": "2026-09-26T05:51:53.892Z",
+      "resolved_at": null
+    },
+    {
+      "id": "c0000000-0000-0000-0000-000000000003",
+      "student_id": "d0000000-0000-0000-0000-000000000001",
+      "category_id": 3,
+      "description": "Dinner dal was served cold and undercooked with sour smell",
+      "photo_url": null,
+      "status": "RESOLVED_PENDING",
+      "escalation_level": 0,
+      "assigned_staff_id": "d0000000-0000-0000-0000-000000000002",
+      "created_at": "2026-09-20T06:09:12.329Z",
+      "updated_at": "2026-09-22T02:09:12.329Z",
+      "resolved_at": "2026-09-22T02:09:12.329Z"
+    },
+    {
+      "id": "c0000000-0000-0000-0000-000000000004",
+      "student_id": "d0000000-0000-0000-0000-000000000001",
+      "category_id": 5,
+      "description": "Wi-Fi access point in 2nd floor corridor dropping packets every 2 minutes",
+      "photo_url": null,
+      "status": "CLOSED",
+      "escalation_level": 0,
+      "assigned_staff_id": "d0000000-0000-0000-0000-000000000002",
+      "created_at": "2026-09-18T06:09:12.329Z",
+      "updated_at": "2026-09-21T06:09:12.329Z",
+      "resolved_at": "2026-09-21T06:09:12.329Z"
+    }
+  ],
+  "status_logs": [
+    {
+      "id": "s0000000-0000-0000-0000-000000000001",
+      "complaint_id": "c0000000-0000-0000-0000-000000000001",
+      "old_status": "NONE",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000001",
+      "note": "Complaint submitted by student",
+      "timestamp": "2026-09-21T12:09:12.329Z"
+    },
+    {
+      "id": "s0000000-0000-0000-0000-000000000002",
+      "complaint_id": "c0000000-0000-0000-0000-000000000001",
+      "old_status": "OPEN",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Assigned to Marcus Vance. Replacement capacitor requested.",
+      "timestamp": "2026-09-21T20:09:12.329Z"
+    },
+    {
+      "id": "s0000000-0000-0000-0000-000000000003",
+      "complaint_id": "c0000000-0000-0000-0000-000000000002",
+      "old_status": "NONE",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000001",
+      "note": "Submitted by student",
+      "timestamp": "2026-09-20T18:09:12.329Z"
+    },
+    {
+      "id": "s0000000-0000-0000-0000-000000000004",
+      "complaint_id": "c0000000-0000-0000-0000-000000000002",
+      "old_status": "OPEN",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Complaint remained unresolved >24h. Escalation Level 1.",
+      "timestamp": "2026-09-21T18:09:12.329Z"
+    },
+    {
+      "id": "s0000000-0000-0000-0000-000000000005",
+      "complaint_id": "c0000000-0000-0000-0000-000000000003",
+      "old_status": "NONE",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000001",
+      "note": "Submitted by student",
+      "timestamp": "2026-09-20T06:09:12.329Z"
+    },
+    {
+      "id": "s0000000-0000-0000-0000-000000000006",
+      "complaint_id": "c0000000-0000-0000-0000-000000000003",
+      "old_status": "OPEN",
+      "new_status": "RESOLVED_PENDING",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Mess contractor informed and head cook issued warning.",
+      "timestamp": "2026-09-22T02:09:12.329Z"
+    },
+    {
+      "id": "d7bc9786-4316-4eb3-ae36-8c4128b1658c",
+      "complaint_id": "e34c0385-f70b-4900-a198-deb14fa9855a",
+      "old_status": "NONE",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000001",
+      "note": "Complaint submitted by student",
+      "timestamp": "2026-09-22T06:25:01.037Z"
+    },
+    {
+      "id": "039c0111-648b-49c7-aad0-1c24079e9685",
+      "complaint_id": "e34c0385-f70b-4900-a198-deb14fa9855a",
+      "old_status": "OPEN",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Carpenter assigned with replacement leg kit.",
+      "timestamp": "2026-09-22T06:25:01.054Z"
+    },
+    {
+      "id": "1600bdd6-545b-40a6-8af4-1634cbd55995",
+      "complaint_id": "e34c0385-f70b-4900-a198-deb14fa9855a",
+      "old_status": "IN_PROGRESS",
+      "new_status": "RESOLVED_PENDING",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Table leg repaired and bolted to wall for safety.",
+      "timestamp": "2026-09-22T06:25:01.080Z"
+    },
+    {
+      "id": "c9ac660e-9a22-499e-882e-a9152505c1f6",
+      "complaint_id": "e34c0385-f70b-4900-a198-deb14fa9855a",
+      "old_status": "RESOLVED_PENDING",
+      "new_status": "REOPENED",
+      "changed_by": "d0000000-0000-0000-0000-000000000001",
+      "note": "Table still wobbles violently when placing books.",
+      "timestamp": "2026-09-22T06:25:01.095Z"
+    },
+    {
+      "id": "d4b00f9f-1be8-46e2-a9e3-0132d3d2ecdd",
+      "complaint_id": "c0000000-0000-0000-0000-000000000001",
+      "old_status": "IN_PROGRESS",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 1. Flagged for Admin Warden.",
+      "timestamp": "2026-09-22T06:25:01.109Z"
+    },
+    {
+      "id": "5bf8e3c5-4022-4539-a682-d7b00673cd25",
+      "complaint_id": "c0000000-0000-0000-0000-000000000002",
+      "old_status": "OPEN",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 2. Flagged for Admin Warden.",
+      "timestamp": "2026-09-22T06:25:01.121Z"
+    },
+    {
+      "id": "f6ab5104-5525-4c49-8187-a9e5a1fcc678",
+      "complaint_id": "be0b923f-2cbb-44d8-85cb-ed5db1ce85f8",
+      "old_status": "NONE",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000001",
+      "note": "Complaint submitted by student",
+      "timestamp": "2026-09-22T06:30:30.486Z"
+    },
+    {
+      "id": "1d33e1b4-38b5-47a3-910d-36b99e246efd",
+      "complaint_id": "be0b923f-2cbb-44d8-85cb-ed5db1ce85f8",
+      "old_status": "OPEN",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Picked up by maintenance technician",
+      "timestamp": "2026-09-22T12:23:34.320Z"
+    },
+    {
+      "id": "3516cdaa-85bc-4340-b250-55d208a3cb69",
+      "complaint_id": "87c79879-6286-4736-8ce7-ada5cf7f4a1d",
+      "old_status": "NONE",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000001",
+      "note": "Complaint submitted by student",
+      "timestamp": "2026-09-26T05:20:44.656Z"
+    },
+    {
+      "id": "dd43f113-6f76-459b-bb1e-04be26a4eac9",
+      "complaint_id": "87c79879-6286-4736-8ce7-ada5cf7f4a1d",
+      "old_status": "OPEN",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Carpenter assigned with replacement leg kit.",
+      "timestamp": "2026-09-26T05:20:44.669Z"
+    },
+    {
+      "id": "e9a6be9d-381c-44cf-bbaa-783b1684ee4e",
+      "complaint_id": "87c79879-6286-4736-8ce7-ada5cf7f4a1d",
+      "old_status": "IN_PROGRESS",
+      "new_status": "RESOLVED_PENDING",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Table leg repaired and bolted to wall for safety.",
+      "timestamp": "2026-09-26T05:20:44.716Z"
+    },
+    {
+      "id": "b53b82a3-2e61-48d7-899c-d5c119df1a63",
+      "complaint_id": "87c79879-6286-4736-8ce7-ada5cf7f4a1d",
+      "old_status": "RESOLVED_PENDING",
+      "new_status": "REOPENED",
+      "changed_by": "d0000000-0000-0000-0000-000000000001",
+      "note": "Table still wobbles violently when placing books.",
+      "timestamp": "2026-09-26T05:20:44.726Z"
+    },
+    {
+      "id": "be90331d-8503-47f9-a2ae-e6176e0cdcd4",
+      "complaint_id": "be0b923f-2cbb-44d8-85cb-ed5db1ce85f8",
+      "old_status": "IN_PROGRESS",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 1. Flagged for Admin Warden.",
+      "timestamp": "2026-09-26T05:20:44.737Z"
+    },
+    {
+      "id": "6018facd-06ee-400e-9782-09606dd89079",
+      "complaint_id": "c0000000-0000-0000-0000-000000000001",
+      "old_status": "IN_PROGRESS",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 2. Flagged for Admin Warden.",
+      "timestamp": "2026-09-26T05:20:44.740Z"
+    },
+    {
+      "id": "c17ac46a-b340-4e0b-ba40-26530b809336",
+      "complaint_id": "c0000000-0000-0000-0000-000000000002",
+      "old_status": "OPEN",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 3. Flagged for Admin Warden.",
+      "timestamp": "2026-09-26T05:20:44.742Z"
+    },
+    {
+      "id": "6776a772-b187-466a-9674-4e80f28978af",
+      "complaint_id": "e5a272d6-cf89-4c3e-9361-2aadd185b2e1",
+      "old_status": "NONE",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000001",
+      "note": "Complaint submitted by student",
+      "timestamp": "2026-09-26T05:51:53.807Z"
+    },
+    {
+      "id": "f2656dee-8c14-400d-878a-ea792661cb8b",
+      "complaint_id": "e5a272d6-cf89-4c3e-9361-2aadd185b2e1",
+      "old_status": "OPEN",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Carpenter assigned with replacement leg kit.",
+      "timestamp": "2026-09-26T05:51:53.821Z"
+    },
+    {
+      "id": "5d47f7d9-ae31-4994-974f-4de666fe52f0",
+      "complaint_id": "e5a272d6-cf89-4c3e-9361-2aadd185b2e1",
+      "old_status": "IN_PROGRESS",
+      "new_status": "RESOLVED_PENDING",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Table leg repaired and bolted to wall for safety.",
+      "timestamp": "2026-09-26T05:51:53.852Z"
+    },
+    {
+      "id": "787cbc12-86ba-41b0-864d-099c7e589593",
+      "complaint_id": "e5a272d6-cf89-4c3e-9361-2aadd185b2e1",
+      "old_status": "RESOLVED_PENDING",
+      "new_status": "REOPENED",
+      "changed_by": "d0000000-0000-0000-0000-000000000001",
+      "note": "Table still wobbles violently when placing books.",
+      "timestamp": "2026-09-26T05:51:53.864Z"
+    },
+    {
+      "id": "acaa44e5-4d27-4b6a-9d19-dc71345148c6",
+      "complaint_id": "be0b923f-2cbb-44d8-85cb-ed5db1ce85f8",
+      "old_status": "IN_PROGRESS",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 2. Flagged for Admin Warden.",
+      "timestamp": "2026-09-26T05:51:53.885Z"
+    },
+    {
+      "id": "ee843dd0-3370-4b45-bfb7-9ea41e9f1ecf",
+      "complaint_id": "c0000000-0000-0000-0000-000000000001",
+      "old_status": "IN_PROGRESS",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 3. Flagged for Admin Warden.",
+      "timestamp": "2026-09-26T05:51:53.889Z"
+    },
+    {
+      "id": "0abb8178-8be3-4021-9cfb-4d651258904f",
+      "complaint_id": "c0000000-0000-0000-0000-000000000002",
+      "old_status": "OPEN",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 4. Flagged for Admin Warden.",
+      "timestamp": "2026-09-26T05:51:53.892Z"
+    }
+  ]
+}
