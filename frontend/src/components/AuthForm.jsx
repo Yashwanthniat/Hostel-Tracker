@@ -68,7 +68,7 @@ export const AuthForm = ({ initialMode = "login" }) => {
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto bg-white/90 backdrop-blur-xl rounded-3xl p-7 sm:p-8 shadow-card border border-slate-200/80 transition-all">
+    <div className="relative w-full max-w-md mx-auto bg-white rounded-3xl p-7 sm:p-8 shadow-sm border border-slate-200/80 transition-all">
       {/* Title */}
       <div className="text-left mb-6">
         <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-bold uppercase tracking-wider mb-2">

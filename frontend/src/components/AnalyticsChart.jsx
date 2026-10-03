@@ -22,11 +22,11 @@ const CATEGORY_COLORS = {
 };
 
 const STATUS_COLORS = {
-  Open: "#0284c7",
-  "In Progress": "#d97706",
+  Open: "#f59e0b",
+  "In Progress": "#3b82f6",
   "Pending Review": "#6366f1",
-  Closed: "#059669",
-  Reopened: "#e11d48",
+  Closed: "#10b981",
+  Reopened: "#f43f5e",
 };
 
 export const AnalyticsChart = ({ data }) => {
@@ -79,9 +79,9 @@ export const AnalyticsChart = ({ data }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Category Volume Bar Chart */}
-      <div className="bg-white/90 backdrop-blur-xl p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-card">
+      <div className="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-sm">
         <h3 className="text-sm font-bold text-slate-900 mb-0.5 tracking-tight">Complaint Volume by Category</h3>
-        <p className="text-xs text-slate-500 mb-4 font-normal">Total grievance frequency logged per category</p>
+        <p className="text-xs text-slate-500 mb-4 font-normal">Total issue frequency logged per category</p>
         <div className="h-64 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={categoryData} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
@@ -101,7 +101,7 @@ export const AnalyticsChart = ({ data }) => {
       </div>
 
       {/* Status Distribution Donut Chart */}
-      <div className="bg-white/90 backdrop-blur-xl p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-card">
+      <div className="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-sm">
         <h3 className="text-sm font-bold text-slate-900 mb-0.5 tracking-tight">Status Distribution</h3>
         <p className="text-xs text-slate-500 mb-4 font-normal">Current state breakdown of all hostel tickets</p>
         <div className="h-64 w-full flex items-center justify-center">

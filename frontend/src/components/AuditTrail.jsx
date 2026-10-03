@@ -47,10 +47,10 @@ export const AuditTrail = ({ logs = [] }) => {
             <div
               className={`p-4 rounded-2xl border transition-all duration-150 ${
                 isAutoEscalation
-                  ? "bg-rose-50/60 border-rose-200/90 shadow-2xs"
+                  ? "bg-rose-50/60 border-rose-200/80 shadow-sm"
                   : isStudentDispute
-                  ? "bg-amber-50/50 border-amber-200/90 shadow-2xs"
-                  : "bg-white/90 border-slate-200/80 hover:border-slate-300 shadow-2xs"
+                  ? "bg-amber-50/60 border-amber-200/80 shadow-sm"
+                  : "bg-white border-slate-200/80 hover:border-slate-300 shadow-sm"
               }`}
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">

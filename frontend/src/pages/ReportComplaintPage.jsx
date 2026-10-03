@@ -29,9 +29,7 @@ export const ReportComplaintPage = () => {
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50/50 bg-dot-grid py-8 sm:py-12">
-      <div className="ambient-gradient-radial absolute inset-0 pointer-events-none" />
-
+    <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50 py-8 sm:py-12">
       <div className="relative max-w-2xl mx-auto px-4 sm:px-6 space-y-6">
         <Link
           to="/"
@@ -42,7 +40,7 @@ export const ReportComplaintPage = () => {
         </Link>
 
         {/* Card Header & Form */}
-        <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-card space-y-5">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-5">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-600 text-white flex items-center justify-center shadow-soft shadow-indigo-600/20">
               <ShieldCheck className="w-5 h-5" />
@@ -52,7 +50,7 @@ export const ReportComplaintPage = () => {
                 Report a Hostel / Mess Issue
               </h1>
               <p className="text-xs text-slate-500">
-                Submit maintenance grievances with instant AI categorization & 24h SLA escalation.
+                Submit maintenance issues with instant AI categorization & 24h SLA escalation.
               </p>
             </div>
           </div>

@@ -78,9 +78,7 @@ export const AdminDashboardPage = () => {
   const totals = analytics?.totals || {};
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50/50 bg-dot-grid py-8 sm:py-10">
-      <div className="ambient-gradient-radial absolute inset-0 pointer-events-none" />
-
+    <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50 py-8 sm:py-10">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -94,7 +92,7 @@ export const AdminDashboardPage = () => {
               </span>
             </div>
             <p className="text-xs sm:text-sm text-slate-500 max-w-2xl font-normal">
-              Autonomous SLA enforcement telemetry, 24-hour escalation controls, and recurring grievance hotspots.
+              Autonomous SLA enforcement telemetry, 24-hour escalation controls, and recurring issue hotspots.
             </p>
           </div>
 
@@ -104,7 +102,7 @@ export const AdminDashboardPage = () => {
               type="button"
               onClick={handleRunEscalationSweep}
               disabled={sweepLoading}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 active:from-rose-800 text-white text-xs font-semibold shadow-soft shadow-rose-600/25 transition-all duration-150 disabled:opacity-50 cursor-pointer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white text-xs font-semibold shadow-sm transition-all duration-150 disabled:opacity-50 cursor-pointer"
               title="Force run 24-hour escalation engine sweep"
             >
               <Play className={`w-3.5 h-3.5 ${sweepLoading ? "animate-spin" : ""}`} />
@@ -115,7 +113,7 @@ export const AdminDashboardPage = () => {
               type="button"
               onClick={loadDashboardData}
               disabled={loading}
-              className="p-2.5 rounded-xl bg-white/90 hover:bg-white border border-slate-200/90 text-slate-700 shadow-2xs hover:shadow-soft transition-all duration-150 cursor-pointer"
+              className="p-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 shadow-sm transition-all duration-150 cursor-pointer"
               title="Refresh Analytics"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin text-indigo-600" : ""}`} />
@@ -125,7 +123,7 @@ export const AdminDashboardPage = () => {
 
         {/* Sweep Result Banner */}
         {sweepResult && (
-          <div className="p-4 bg-emerald-50/90 border border-emerald-200/80 rounded-2xl flex items-center justify-between text-xs text-emerald-900 shadow-2xs">
+          <div className="p-4 bg-emerald-50 border border-emerald-200/80 rounded-2xl flex items-center justify-between text-xs text-emerald-900 shadow-sm">
             <div className="flex items-center gap-2.5">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
               <span>
@@ -147,47 +145,47 @@ export const AdminDashboardPage = () => {
 
         {/* KPI Cards Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
-          <div className="bg-white/90 backdrop-blur-sm p-4 rounded-2xl border border-slate-200/80 shadow-2xs">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 block mb-1">
               Total Logged
             </span>
-            <p className="text-2xl font-extrabold text-slate-900 tracking-tight">{totals.total || 0}</p>
+            <p className="text-2xl font-bold text-slate-900 tracking-tight">{totals.total || 0}</p>
           </div>
 
-          <div className="bg-white/90 backdrop-blur-sm p-4 rounded-2xl border border-slate-200/80 shadow-2xs">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-sky-600 block mb-1">
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-sky-600 block mb-1">
               Open Queue
             </span>
-            <p className="text-2xl font-extrabold text-sky-700 tracking-tight">{totals.open || 0}</p>
+            <p className="text-2xl font-bold text-sky-700 tracking-tight">{totals.open || 0}</p>
           </div>
 
-          <div className="bg-white/90 backdrop-blur-sm p-4 rounded-2xl border border-slate-200/80 shadow-2xs">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-amber-600 block mb-1">
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-600 block mb-1">
               In Progress
             </span>
-            <p className="text-2xl font-extrabold text-amber-700 tracking-tight">{totals.inProgress || 0}</p>
+            <p className="text-2xl font-bold text-amber-700 tracking-tight">{totals.inProgress || 0}</p>
           </div>
 
-          <div className="bg-white/90 backdrop-blur-sm p-4 rounded-2xl border border-slate-200/80 shadow-2xs">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 block mb-1">
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 block mb-1">
               Pending Review
             </span>
-            <p className="text-2xl font-extrabold text-indigo-700 tracking-tight">{totals.resolvedPending || 0}</p>
+            <p className="text-2xl font-bold text-indigo-700 tracking-tight">{totals.resolvedPending || 0}</p>
           </div>
 
-          <div className="bg-white/90 backdrop-blur-sm p-4 rounded-2xl border border-slate-200/80 shadow-2xs">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 block mb-1">
+          <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-emerald-600 block mb-1">
               Closed Tickets
             </span>
-            <p className="text-2xl font-extrabold text-emerald-700 tracking-tight">{totals.closed || 0}</p>
+            <p className="text-2xl font-bold text-emerald-700 tracking-tight">{totals.closed || 0}</p>
           </div>
 
-          <div className="bg-white/90 backdrop-blur-sm p-4 rounded-2xl border border-rose-200/90 shadow-2xs">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-rose-600 block mb-1 flex items-center gap-1">
+          <div className="bg-white p-4 rounded-2xl border border-rose-200/80 shadow-sm">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-rose-600 block mb-1 flex items-center gap-1">
               <AlertTriangle className="w-3 h-3 text-rose-500" />
               Escalation Rate
             </span>
-            <p className="text-2xl font-extrabold text-rose-700 tracking-tight">{totals.escalationRate || 0}%</p>
+            <p className="text-2xl font-bold text-rose-700 tracking-tight">{totals.escalationRate || 0}%</p>
           </div>
         </div>
 
@@ -202,7 +200,7 @@ export const AdminDashboardPage = () => {
         {analytics && <AnalyticsChart data={analytics} />}
 
         {/* Hot Rooms Section (3+ complaints in 30 days) */}
-        <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-card space-y-4">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="w-10 h-10 rounded-2xl bg-rose-50 border border-rose-100 text-rose-600 flex items-center justify-center shadow-2xs">
@@ -210,7 +208,7 @@ export const AdminDashboardPage = () => {
               </div>
               <div>
                 <h2 className="text-base font-bold text-slate-900 tracking-tight">
-                  Hot Rooms & Repeat Grievance Hotspots
+                  Hot Rooms & Repeat Issue Hotspots
                 </h2>
                 <p className="text-xs text-slate-500">
                   Rooms generating 3 or more complaints in the rolling 30-day monitoring window.

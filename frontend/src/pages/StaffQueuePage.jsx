@@ -69,9 +69,7 @@ export const StaffQueuePage = () => {
   ).length;
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50/50 bg-dot-grid py-8 sm:py-10">
-      <div className="ambient-gradient-radial absolute inset-0 pointer-events-none" />
-
+    <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50 py-8 sm:py-10">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -93,7 +91,7 @@ export const StaffQueuePage = () => {
             type="button"
             onClick={loadQueue}
             disabled={loading}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/90 hover:bg-white border border-slate-200/90 text-slate-700 text-xs font-semibold shadow-2xs hover:shadow-soft transition-all duration-150 cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold shadow-sm transition-all duration-150 cursor-pointer"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin text-indigo-600" : ""}`} />
             <span>Refresh Queue</span>
@@ -102,7 +100,7 @@ export const StaffQueuePage = () => {
 
         {/* Escalation Warning Banner */}
         {escalatedCount > 0 && (
-          <div className="p-4 rounded-2xl bg-rose-50/80 border border-rose-200/80 flex items-center justify-between text-xs text-rose-900 shadow-2xs">
+          <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200/80 flex items-center justify-between text-xs text-rose-900 shadow-sm">
             <div className="flex items-center gap-2.5 font-medium">
               <span className="relative flex h-2.5 w-2.5 flex-shrink-0">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
@@ -122,7 +120,7 @@ export const StaffQueuePage = () => {
             onClick={() => setActiveTab("all_active")}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-150 cursor-pointer ${
               activeTab === "all_active"
-                ? "bg-white text-indigo-700 shadow-soft font-bold"
+                ? "bg-white text-indigo-700 shadow-sm font-bold"
                 : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
             }`}
           >
@@ -134,7 +132,7 @@ export const StaffQueuePage = () => {
             onClick={() => setActiveTab("open")}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-150 cursor-pointer ${
               activeTab === "open"
-                ? "bg-white text-indigo-700 shadow-soft font-bold"
+                ? "bg-white text-indigo-700 shadow-sm font-bold"
                 : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
             }`}
           >
@@ -146,7 +144,7 @@ export const StaffQueuePage = () => {
             onClick={() => setActiveTab("in_progress")}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-150 cursor-pointer ${
               activeTab === "in_progress"
-                ? "bg-white text-indigo-700 shadow-soft font-bold"
+                ? "bg-white text-indigo-700 shadow-sm font-bold"
                 : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
             }`}
           >
@@ -161,7 +159,7 @@ export const StaffQueuePage = () => {
             <p className="text-xs text-slate-500">Updating maintenance queue...</p>
           </div>
         ) : activeComplaints.length === 0 ? (
-          <div className="p-14 text-center bg-white/80 backdrop-blur-md rounded-3xl border border-slate-200/80 shadow-2xs">
+          <div className="p-14 text-center bg-white rounded-3xl border border-slate-200/80 shadow-sm">
             <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto mb-2" />
             <h2 className="text-base font-bold text-slate-800">Queue is Clear</h2>
             <p className="text-xs text-slate-500 mt-1">No active complaints matching the selected filter.</p>
@@ -176,10 +174,10 @@ export const StaffQueuePage = () => {
               return (
                 <div
                   key={c.id}
-                  className={`p-5 bg-white/90 backdrop-blur-sm rounded-3xl border transition-all duration-150 ${
+                  className={`p-5 bg-white rounded-3xl border transition-all duration-150 ${
                     isEscalated
-                      ? "border-rose-300/80 ring-1 ring-rose-100 shadow-xs"
-                      : "border-slate-200/80 hover:border-slate-300/90 shadow-2xs hover:shadow-soft"
+                      ? "border-rose-200 ring-1 ring-rose-100 shadow-sm"
+                      : "border-slate-200/80 hover:border-slate-300 shadow-sm hover:shadow-md"
                   }`}
                 >
                   <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
