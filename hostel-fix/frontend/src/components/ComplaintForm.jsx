@@ -325,10 +325,10 @@ export const ComplaintForm = ({
         className="group w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 active:from-indigo-700 text-white font-semibold text-sm shadow-soft shadow-indigo-600/25 transition-all duration-200 disabled:opacity-50 cursor-pointer"
       >
         {isSubmitting ? (
-          <span>Filing Grievance & Starting 24h SLA...</span>
+          <span>Reporting Issue & Starting 24h SLA...</span>
         ) : (
           <>
-            <span>Submit Grievance to Board</span>
+            <span>Report Issue</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </>
         )}

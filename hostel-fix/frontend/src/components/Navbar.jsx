@@ -28,7 +28,7 @@ export const Navbar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <header className="sticky top-0 z-40 bg-white/75 backdrop-blur-xl border-b border-slate-200/70 transition-all">
+    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200/60 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group">
@@ -40,7 +40,7 @@ export const Navbar = () => {
             <div className="flex items-center gap-2">
               <span className="text-sm font-bold text-slate-900 tracking-tight">Hostel Fix</span>
               <span className="px-1.5 py-0.5 rounded-full bg-indigo-50/80 text-indigo-700 text-[10px] font-semibold tracking-wider border border-indigo-200/50 uppercase">
-                SLA Tracker
+                AI Tracker
               </span>
             </div>
             <p className="text-[10px] text-slate-400 font-medium leading-none">Campus Incident Operations · SLA Enforced</p>

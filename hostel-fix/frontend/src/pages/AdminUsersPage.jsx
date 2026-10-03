@@ -42,9 +42,7 @@ export const AdminUsersPage = () => {
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50/50 bg-dot-grid py-8 sm:py-10">
-      <div className="ambient-gradient-radial absolute inset-0 pointer-events-none" />
-
+    <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50 py-8 sm:py-10">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -64,20 +62,20 @@ export const AdminUsersPage = () => {
         </div>
 
         {successMessage && (
-          <div className="p-3.5 bg-emerald-50/90 border border-emerald-200/80 rounded-2xl text-xs text-emerald-800 flex items-center gap-2 shadow-2xs">
+          <div className="p-3.5 bg-emerald-50 border border-emerald-200/80 rounded-2xl text-xs text-emerald-800 flex items-center gap-2 shadow-sm">
             <Check className="w-4 h-4 text-emerald-600" />
             <span className="font-semibold">{successMessage}</span>
           </div>
         )}
 
         {error && (
-          <div className="p-4 bg-rose-50/80 border border-rose-200/80 rounded-2xl text-xs text-rose-700 shadow-2xs">
+          <div className="p-4 bg-rose-50 border border-rose-200/80 rounded-2xl text-xs text-rose-700 shadow-sm">
             {error}
           </div>
         )}
 
         {/* Users Table */}
-        <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-7 border border-slate-200/80 shadow-card overflow-hidden">
+        <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/80 shadow-sm overflow-hidden">
           {loading ? (
             <div className="py-20 flex flex-col items-center justify-center space-y-2">
               <div className="h-8 w-8 animate-spin rounded-full border-3 border-indigo-600 border-t-transparent"></div>

@@ -32,13 +32,10 @@ export const ProfilePage = () => {
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50/60 bg-dot-grid py-12 px-4 sm:px-6">
-      {/* Ambient background glow */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[520px] h-[320px] ambient-gradient-radial -z-10 pointer-events-none" />
-
+    <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50 py-12 px-4 sm:px-6">
       <div className="max-w-xl mx-auto space-y-6">
         {/* Main Card */}
-        <div className="glass-panel rounded-3xl p-8 shadow-card border border-slate-200/80 relative overflow-hidden">
+        <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-200/80 relative overflow-hidden">
           {/* Subtle top accent bar */}
           <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-400" />
 

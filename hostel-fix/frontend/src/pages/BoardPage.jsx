@@ -54,10 +54,7 @@ export const BoardPage = () => {
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50/50 bg-dot-grid py-8 sm:py-10">
-      {/* Ambient Radial Accent */}
-      <div className="ambient-gradient-radial absolute inset-0 pointer-events-none" />
-
+    <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50 py-8 sm:py-10">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -81,7 +78,7 @@ export const BoardPage = () => {
               type="button"
               onClick={loadData}
               disabled={loading}
-              className="p-2.5 rounded-xl bg-white/90 hover:bg-white border border-slate-200/90 text-slate-700 shadow-2xs hover:shadow-soft transition-all duration-150 cursor-pointer"
+              className="p-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 shadow-sm transition-all duration-150 cursor-pointer"
               title="Refresh Board"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin text-indigo-600" : ""}`} />
@@ -90,10 +87,10 @@ export const BoardPage = () => {
             {isStudent && (
               <Link
                 to="/report"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-semibold text-xs shadow-soft shadow-indigo-600/25 transition-all duration-150 cursor-pointer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs shadow-sm transition-all duration-150 cursor-pointer"
               >
                 <PlusCircle className="w-4 h-4" />
-                <span>File Grievance</span>
+                <span>Report Issue</span>
               </Link>
             )}
           </div>

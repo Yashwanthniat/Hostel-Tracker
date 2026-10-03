@@ -83,10 +83,10 @@ export const ComplaintCard = ({ complaint }) => {
 
   return (
     <div
-      className={`group relative bg-white/90 backdrop-blur-sm rounded-2xl p-4 sm:p-5 border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card cursor-pointer ${
+      className={`group relative bg-white rounded-2xl p-4 sm:p-5 border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${
         isOverdue 
-          ? "border-rose-300/80 ring-1 ring-rose-200/50 shadow-xs" 
-          : "border-slate-200/80 hover:border-slate-300/90 shadow-2xs"
+          ? "border-rose-200 ring-1 ring-rose-100 shadow-sm" 
+          : "border-slate-200/80 hover:border-slate-300 shadow-sm"
       }`}
     >
       {/* Header Info */}

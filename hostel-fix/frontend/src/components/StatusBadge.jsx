@@ -7,36 +7,36 @@ export const StatusBadge = ({ status, escalationLevel = 0, size = "md" }) => {
       case "OPEN":
         return {
           label: "Open Queue",
-          dotColor: "bg-sky-500",
-          pillBg: "bg-sky-50/70 border-sky-200/70 text-sky-800",
+          dotColor: "bg-amber-400",
+          pillBg: "bg-amber-50/90 border-amber-200/80 text-amber-800",
           icon: Clock,
         };
       case "IN_PROGRESS":
         return {
           label: "In Progress",
-          dotColor: "bg-amber-500",
-          pillBg: "bg-amber-50/70 border-amber-200/70 text-amber-800",
+          dotColor: "bg-blue-400",
+          pillBg: "bg-blue-50/90 border-blue-200/80 text-blue-800",
           icon: Wrench,
         };
       case "RESOLVED_PENDING":
         return {
           label: "Pending Review",
-          dotColor: "bg-indigo-500",
-          pillBg: "bg-indigo-50/70 border-indigo-200/70 text-indigo-800",
+          dotColor: "bg-indigo-400",
+          pillBg: "bg-indigo-50/90 border-indigo-200/80 text-indigo-800",
           icon: CheckCircle2,
         };
       case "CLOSED":
         return {
           label: "Resolved",
-          dotColor: "bg-emerald-500",
-          pillBg: "bg-emerald-50/70 border-emerald-200/70 text-emerald-800",
+          dotColor: "bg-emerald-400",
+          pillBg: "bg-emerald-50/90 border-emerald-200/80 text-emerald-800",
           icon: CheckCircle2,
         };
       case "REOPENED":
         return {
           label: "Disputed",
-          dotColor: "bg-rose-500",
-          pillBg: "bg-rose-50/70 border-rose-200/70 text-rose-800",
+          dotColor: "bg-rose-400",
+          pillBg: "bg-rose-50/90 border-rose-200/80 text-rose-800",
           icon: RotateCcw,
         };
       default:

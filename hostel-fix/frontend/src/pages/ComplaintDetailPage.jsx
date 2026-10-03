@@ -104,9 +104,7 @@ export const ComplaintDetailPage = () => {
   }
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50/50 bg-dot-grid py-8 sm:py-10">
-      <div className="ambient-gradient-radial absolute inset-0 pointer-events-none" />
-
+    <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50 py-8 sm:py-10">
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         {/* Back Navigation */}
         <Link
@@ -119,7 +117,7 @@ export const ComplaintDetailPage = () => {
 
         {/* Student Action Alert when complaint is in RESOLVED_PENDING */}
         {user?.role === "student" && complaint.status === "RESOLVED_PENDING" && (
-          <div className="p-5 sm:p-6 bg-indigo-50/90 border border-indigo-200/80 rounded-3xl shadow-soft flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="p-5 sm:p-6 bg-white border border-indigo-200/90 rounded-3xl shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <span className="relative flex h-2.5 w-2.5">
@@ -159,7 +157,7 @@ export const ComplaintDetailPage = () => {
         )}
 
         {/* Main Complaint Overview Card */}
-        <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-card space-y-6">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-6">
           {/* Top Badges & Meta */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
             <div className="flex items-center gap-2 flex-wrap">
@@ -284,7 +282,7 @@ export const ComplaintDetailPage = () => {
         </div>
 
         {/* Immutable Audit Trail Section */}
-        <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-card space-y-6">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <div className="p-2 bg-indigo-50 text-indigo-600 rounded-xl">
