@@ -233,7 +233,7 @@ export const KanbanBoard = ({
               <button
                 type="button"
                 onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-                className="flex items-center gap-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 cursor-pointer shadow-2xs"
+                className="flex items-center gap-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:scale-95 cursor-pointer shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500"
               >
                 <Filter className="w-3.5 h-3.5 text-slate-400" />
                 <span>{currentCategoryLabel}</span>
@@ -281,7 +281,7 @@ export const KanbanBoard = ({
               <button
                 type="button"
                 onClick={onMyOnlyToggle}
-                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold tracking-tight transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 cursor-pointer ${
+                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold tracking-tight transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:scale-95 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 ${
                   myOnly
                     ? "bg-indigo-600 text-white border border-indigo-600 shadow-sm font-medium"
                     : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
@@ -311,7 +311,7 @@ export const KanbanBoard = ({
           <button
             type="button"
             onClick={() => setQuickFilter("all")}
-            className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 cursor-pointer ${
+            className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:scale-95 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500 ${
               quickFilter === "all"
                 ? "bg-indigo-600 text-white font-medium shadow-sm hover:bg-indigo-700 border border-indigo-600"
                 : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
@@ -331,7 +331,7 @@ export const KanbanBoard = ({
           <button
             type="button"
             onClick={() => setQuickFilter("overdue")}
-            className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-rose-500 cursor-pointer ${
+            className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:scale-95 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-rose-500 ${
               quickFilter === "overdue"
                 ? "bg-rose-50 text-rose-700 border border-rose-200/80 shadow-sm font-medium hover:bg-rose-100"
                 : "bg-white text-slate-600 border border-slate-200 hover:bg-rose-50/50 hover:text-rose-700 hover:border-rose-200"
@@ -354,7 +354,7 @@ export const KanbanBoard = ({
           <button
             type="button"
             onClick={() => setQuickFilter("disputed")}
-            className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500 cursor-pointer ${
+            className={`inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:scale-95 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-500 ${
               quickFilter === "disputed"
                 ? "bg-amber-50 text-amber-800 border border-amber-200/80 shadow-sm font-medium hover:bg-amber-100"
                 : "bg-white text-slate-600 border border-slate-200 hover:bg-amber-50/50 hover:text-amber-800 hover:border-amber-200"

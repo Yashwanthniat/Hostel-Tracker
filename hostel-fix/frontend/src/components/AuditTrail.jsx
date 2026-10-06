@@ -32,7 +32,7 @@ export const AuditTrail = ({ logs = [] }) => {
           <div key={log.id || index} className="relative group">
             {/* Timeline Dot Indicator */}
             <div
-              className={`absolute -left-6 top-2 w-3.5 h-3.5 rounded-full border-2 border-white shadow-xs flex items-center justify-center ${
+              className={`absolute -left-6 top-2 w-3.5 h-3.5 rounded-full border-2 border-white shadow-xs flex items-center justify-center transition-transform duration-200 ease-out group-hover:scale-125 ${
                 isAutoEscalation
                   ? "bg-rose-600 ring-2 ring-rose-200"
                   : isStudentDispute
@@ -45,12 +45,12 @@ export const AuditTrail = ({ logs = [] }) => {
 
             {/* Audit Entry Card */}
             <div
-              className={`p-4 rounded-2xl border transition-all duration-150 ${
+              className={`p-4 rounded-2xl border transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md hover:border-slate-300/80 cursor-default ${
                 isAutoEscalation
                   ? "bg-rose-50/60 border-rose-200/80 shadow-sm"
                   : isStudentDispute
                   ? "bg-amber-50/60 border-amber-200/80 shadow-sm"
-                  : "bg-white border-slate-200/80 hover:border-slate-300 shadow-sm"
+                  : "bg-white border-slate-200/80 shadow-sm"
               }`}
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">

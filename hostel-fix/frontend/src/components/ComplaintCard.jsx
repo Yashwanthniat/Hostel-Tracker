@@ -86,10 +86,10 @@ export const ComplaintCard = ({ complaint }) => {
 
   return (
     <div
-      className={`group relative bg-white rounded-2xl overflow-hidden p-4 sm:p-5 border transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 cursor-pointer ${
+      className={`group relative bg-white rounded-2xl overflow-hidden p-4 sm:p-5 border transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-lg hover:border-slate-300 cursor-pointer ${
         isOverdue 
           ? "border-rose-200 border-l-4 border-l-rose-500 ring-1 ring-rose-100/60 shadow-sm" 
-          : "border-slate-200/80 hover:border-slate-300 shadow-sm"
+          : "border-slate-200/80 shadow-sm"
       }`}
     >
       {/* Header Info */}
@@ -161,10 +161,10 @@ export const ComplaintCard = ({ complaint }) => {
 
         <Link
           to={`/complaints/${complaint.id}`}
-          className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:translate-x-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-indigo-500 rounded px-1 py-0.5 flex-shrink-0"
+          className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-indigo-500 rounded px-1 py-0.5 flex-shrink-0"
         >
           <span>Details</span>
-          <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+          <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-150" />
         </Link>
       </div>
     </div>
