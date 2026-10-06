@@ -1,7 +1,7 @@
 import React from "react";
 import { AlertTriangle, CheckCircle2, Clock, RotateCcw, Wrench } from "lucide-react";
 
-export const StatusBadge = ({ status, escalationLevel = 0, size = "md" }) => {
+export const StatusBadge = ({ status, escalationLevel = 0, createdAt = null, size = "md" }) => {
   const getStatusConfig = () => {
     switch (status) {
       case "OPEN":
@@ -51,8 +51,28 @@ export const StatusBadge = ({ status, escalationLevel = 0, size = "md" }) => {
 
   const config = getStatusConfig();
   const isEscalated = escalationLevel > 0;
-
   const isSmall = size === "sm";
+
+  // Calculate elapsed time beyond the 24-hour SLA deadline
+  const getBreachWindow = () => {
+    if (!createdAt) {
+      const fallbackHours = Math.max(1, escalationLevel * 12);
+      if (fallbackHours >= 24) {
+        return `Overdue by ${Math.floor(fallbackHours / 24)}d`;
+      }
+      return `Overdue by ${fallbackHours}h`;
+    }
+
+    const createdTime = new Date(createdAt).getTime();
+    const elapsedHours = (Date.now() - createdTime) / (1000 * 60 * 60);
+    const breachHours = Math.max(1, Math.floor(elapsedHours - 24));
+
+    if (breachHours >= 24) {
+      const breachDays = Math.floor(breachHours / 24);
+      return `Overdue by ${breachDays}d`;
+    }
+    return `Overdue by ${breachHours}h`;
+  };
 
   return (
     <div className="inline-flex items-center gap-1.5 flex-wrap">
@@ -67,16 +87,16 @@ export const StatusBadge = ({ status, escalationLevel = 0, size = "md" }) => {
 
       {isEscalated && (
         <span
-          className={`inline-flex items-center rounded-full border border-rose-200/90 bg-rose-50 text-rose-800 font-semibold tracking-tight shadow-xs ${
-            isSmall ? "px-2 py-0.5 text-[11px] gap-1" : "px-2.5 py-1 text-xs gap-1.5"
+          className={`inline-flex items-center rounded-full border border-rose-200 bg-rose-50 text-rose-700 font-semibold tracking-tight shadow-xs transition-all ${
+            isSmall ? "px-2 py-0.5 text-[11px] gap-1.5" : "px-2.5 py-1 text-xs gap-1.5"
           }`}
-          title={`Complaint unresolved for >24h. Escalation Level ${escalationLevel}`}
+          title="24h SLA breached. Priority escalation active."
         >
           <span className="relative flex h-2 w-2 flex-shrink-0">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-600"></span>
           </span>
-          <span className="font-bold">Lvl {escalationLevel} Overdue</span>
+          <span className="font-bold">{getBreachWindow()}</span>
         </span>
       )}
     </div>

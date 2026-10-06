@@ -123,9 +123,33 @@ export const StatusUpdateDropdown = ({
   };
 
   if (available.length === 0) {
+    if (currentStatus === "REOPENED") {
+      return (
+        <div className="bg-amber-50/80 border border-amber-200 rounded-xl p-4 flex items-start gap-3 w-full animate-fadeIn">
+          <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <div className="space-y-0.5 text-xs">
+            <span className="font-bold text-amber-900 block">Dispute Under Administrative Review</span>
+            <p className="text-amber-800 leading-relaxed font-medium">
+              This ticket has been flagged back to the Warden and {complaint.default_staff_group || "Carpentry/Facilities"} supervisor for priority re-inspection.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    const roleHolders = {
+      OPEN: "Awaiting Staff Pickup: Ticket logged and waiting for maintenance crew assignment.",
+      IN_PROGRESS: "Awaiting Technician Resolution: Assigned maintenance staff is actively diagnosing or resolving this issue.",
+      RESOLVED_PENDING: "Awaiting Student Sign-Off: Work completed. Pending student room verification and acceptance.",
+      CLOSED: "Ticket Resolved & Closed: Verified by student and recorded in the permanent audit trail.",
+    };
+
+    const actionText = roleHolders[currentStatus] || "No state transitions currently available for your account on this complaint.";
+
     return (
-      <div className="text-xs text-slate-500 p-3 bg-slate-50/80 border border-slate-200/70 rounded-2xl">
-        No state transitions currently available for your account on this complaint.
+      <div className="text-xs text-slate-700 p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl flex items-center gap-2.5 w-full">
+        <Clock className="w-4 h-4 text-slate-400 flex-shrink-0" />
+        <span className="font-medium leading-relaxed text-slate-700">{actionText}</span>
       </div>
     );
   }

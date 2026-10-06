@@ -157,7 +157,8 @@ export const ComplaintDetailPage = () => {
         )}
 
         {/* Main Complaint Overview Card */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-6">
+        {/* Main Complaint Overview Card */}
+        <div className="bg-white border border-slate-200/80 rounded-2xl shadow-sm p-7 space-y-6">
           {/* Top Badges & Meta */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
             <div className="flex items-center gap-2 flex-wrap">
@@ -175,10 +176,19 @@ export const ComplaintDetailPage = () => {
               </span>
             </div>
 
-            <StatusBadge
-              status={complaint.status}
-              escalationLevel={complaint.escalation_level}
-            />
+            <div className="flex items-center gap-2 flex-wrap">
+              {complaint.status === "REOPENED" && (
+                <span className="bg-rose-50 text-rose-700 border border-rose-200 px-3 py-1 rounded-full text-xs font-semibold inline-flex items-center gap-1.5 shadow-2xs">
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Disputed</span>
+                </span>
+              )}
+              <StatusBadge
+                status={complaint.status}
+                escalationLevel={complaint.escalation_level}
+                createdAt={complaint.created_at}
+              />
+            </div>
           </div>
 
           {/* Complaint Description */}
@@ -189,6 +199,93 @@ export const ComplaintDetailPage = () => {
             <p className="text-base sm:text-lg text-slate-900 leading-relaxed font-semibold whitespace-pre-wrap">
               {complaint.description}
             </p>
+          </div>
+
+          {/* Visual State Progress Stepper */}
+          <div className="py-4 px-3 sm:px-5 bg-slate-50 border border-slate-200/70 rounded-2xl">
+            <div className="flex items-center justify-between relative">
+              {/* Background Connecting Line */}
+              <div className="absolute top-4 left-8 right-8 h-0.5 bg-slate-200 -z-0 hidden sm:block" />
+              {/* Filled Progress Line */}
+              <div
+                className="absolute top-4 left-8 h-0.5 bg-indigo-600 transition-all duration-500 -z-0 hidden sm:block"
+                style={{
+                  width:
+                    complaint.status === "OPEN"
+                      ? "0%"
+                      : complaint.status === "IN_PROGRESS" || complaint.status === "REOPENED"
+                      ? "33.3%"
+                      : complaint.status === "RESOLVED_PENDING"
+                      ? "66.6%"
+                      : "100%",
+                }}
+              />
+
+              {/* 4 Steps */}
+              {[
+                {
+                  num: 1,
+                  title: "Logged / Open",
+                  desc: "Ticket received",
+                  active: complaint.status === "OPEN",
+                  done: ["IN_PROGRESS", "RESOLVED_PENDING", "CLOSED", "REOPENED"].includes(complaint.status),
+                },
+                {
+                  num: 2,
+                  title: complaint.status === "REOPENED" ? "Dispute Re-Review" : "Assigned & In Progress",
+                  desc: complaint.status === "REOPENED" ? "Priority re-inspection" : "Staff investigating",
+                  active: complaint.status === "IN_PROGRESS" || complaint.status === "REOPENED",
+                  done: ["RESOLVED_PENDING", "CLOSED"].includes(complaint.status),
+                },
+                {
+                  num: 3,
+                  title: "Student Verification",
+                  desc: "Pending room sign-off",
+                  active: complaint.status === "RESOLVED_PENDING",
+                  done: complaint.status === "CLOSED",
+                },
+                {
+                  num: 4,
+                  title: "Closed & Resolved",
+                  desc: "Verified complete",
+                  active: complaint.status === "CLOSED",
+                  done: complaint.status === "CLOSED",
+                },
+              ].map((step, idx) => {
+                const isCurrent = step.active;
+                const isDone = step.done && !isCurrent;
+
+                return (
+                  <div key={idx} className="flex-1 flex flex-col items-center text-center relative z-10 px-1">
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${
+                        isDone
+                          ? "bg-indigo-600 text-white shadow-soft shadow-indigo-600/25"
+                          : isCurrent
+                          ? "bg-indigo-600 text-white ring-4 ring-indigo-100 shadow-soft shadow-indigo-600/30"
+                          : "bg-white border-2 border-slate-300 text-slate-400"
+                      }`}
+                    >
+                      {isDone ? <CheckCircle2 className="w-4 h-4" /> : step.num}
+                    </div>
+                    <span
+                      className={`mt-2 text-[11px] sm:text-xs font-semibold tracking-tight transition-colors line-clamp-1 ${
+                        isCurrent
+                          ? "text-indigo-600 font-bold"
+                          : isDone
+                          ? "text-slate-800"
+                          : "text-slate-400"
+                      }`}
+                    >
+                      {step.title}
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-medium hidden sm:inline-block mt-0.5">
+                      {step.desc}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           {/* Photo Attachment if present */}
@@ -211,27 +308,27 @@ export const ComplaintDetailPage = () => {
             </div>
           )}
 
-          {/* Key Details Grid */}
+          {/* Key Details Grid with High-Contrast Typography */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-4 border-t border-slate-100 text-xs">
-            <div className="p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200/60 shadow-2xs">
+            <div className="p-3.5 bg-slate-50 border border-slate-200/60 rounded-xl shadow-2xs">
               <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">Reported By</span>
-              <span className="font-bold text-slate-800 flex items-center gap-1.5 mt-1 text-xs">
-                <User className="w-3.5 h-3.5 text-indigo-500" />
+              <span className="font-bold text-slate-900 flex items-center gap-1.5 mt-1 text-xs">
+                <User className="w-3.5 h-3.5 text-slate-400" />
                 {complaint.student_name}
               </span>
             </div>
 
-            <div className="p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200/60 shadow-2xs">
+            <div className="p-3.5 bg-slate-50 border border-slate-200/60 rounded-xl shadow-2xs">
               <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">Assigned Unit</span>
-              <span className="font-bold text-slate-800 flex items-center gap-1.5 mt-1 text-xs">
-                <Wrench className="w-3.5 h-3.5 text-amber-500" />
+              <span className="font-bold text-slate-900 flex items-center gap-1.5 mt-1 text-xs">
+                <Wrench className="w-3.5 h-3.5 text-slate-400" />
                 {complaint.default_staff_group || "General Operations"}
               </span>
             </div>
 
-            <div className="p-3.5 bg-slate-50/80 rounded-2xl border border-slate-200/60 shadow-2xs">
+            <div className="p-3.5 bg-slate-50 border border-slate-200/60 rounded-xl shadow-2xs">
               <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">Created At</span>
-              <span className="font-bold text-slate-800 flex items-center gap-1.5 mt-1 text-xs">
+              <span className="font-bold text-slate-900 flex items-center gap-1.5 mt-1 text-xs">
                 <Calendar className="w-3.5 h-3.5 text-slate-400" />
                 {new Date(complaint.created_at).toLocaleString()}
               </span>
