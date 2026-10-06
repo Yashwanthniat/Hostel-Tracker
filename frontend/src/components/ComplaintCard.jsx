@@ -67,9 +67,12 @@ export const ComplaintCard = ({ complaint }) => {
     if (!dateStr) return "";
     const date = new Date(dateStr);
     const now = new Date();
-    const diffHours = Math.floor((now - date) / (1000 * 60 * 60));
+    const diffMs = now - date;
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
     
-    if (diffHours < 1) return "Just now";
+    if (diffMinutes < 1) return "Just now";
+    if (diffMinutes < 60) return `${diffMinutes}m ago`;
     if (diffHours < 24) return `${diffHours}h ago`;
     const diffDays = Math.floor(diffHours / 24);
     return `${diffDays}d ago`;
@@ -83,10 +86,10 @@ export const ComplaintCard = ({ complaint }) => {
 
   return (
     <div
-      className={`group relative bg-white rounded-2xl p-4 sm:p-5 border transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md cursor-pointer ${
+      className={`group relative bg-white rounded-2xl overflow-hidden p-4 sm:p-5 border transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-lg hover:border-slate-300 cursor-pointer ${
         isOverdue 
-          ? "border-rose-200 ring-1 ring-rose-100 shadow-sm" 
-          : "border-slate-200/80 hover:border-slate-300 shadow-sm"
+          ? "border-rose-200 border-l-4 border-l-rose-500 ring-1 ring-rose-100/60 shadow-sm" 
+          : "border-slate-200/80 shadow-sm"
       }`}
     >
       {/* Header Info */}
@@ -108,6 +111,7 @@ export const ComplaintCard = ({ complaint }) => {
         <StatusBadge 
           status={complaint.status} 
           escalationLevel={complaint.escalation_level} 
+          createdAt={complaint.created_at}
           size="sm" 
         />
       </div>
@@ -127,7 +131,7 @@ export const ComplaintCard = ({ complaint }) => {
             target="_blank"
             rel="noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="inline-flex items-center gap-1.5 text-[11px] font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50/70 border border-indigo-100/80 px-2.5 py-1 rounded-xl transition-colors"
+            className="inline-flex items-center gap-1.5 text-[11px] font-medium text-indigo-600 hover:text-indigo-800 bg-indigo-50/70 border border-indigo-100/80 px-2.5 py-1 rounded-xl transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-2xs active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-indigo-500"
           >
             <ImageIcon className="w-3 h-3" />
             <span>View Attachment Evidence</span>
@@ -157,10 +161,10 @@ export const ComplaintCard = ({ complaint }) => {
 
         <Link
           to={`/complaints/${complaint.id}`}
-          className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 group-hover:translate-x-0.5 transition-all flex-shrink-0"
+          className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-indigo-500 rounded px-1 py-0.5 flex-shrink-0"
         >
           <span>Details</span>
-          <ArrowRight className="w-3 h-3" />
+          <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-150" />
         </Link>
       </div>
     </div>

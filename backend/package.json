@@ -19,5 +19,9 @@
     "jsonwebtoken": "^9.0.2",
     "node-cron": "^3.0.3",
     "zod": "^3.24.2"
+  },
+  "allowScripts": {
+    "@google/genai@2.24.0": true,
+    "protobufjs@7.6.6": true
   }
 }
