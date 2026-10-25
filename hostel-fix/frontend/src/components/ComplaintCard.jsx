@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { StatusBadge } from "./StatusBadge";
+import { useAuth } from "../context/AuthContext";
+import { api } from "../lib/api";
 import { 
   Zap, 
   Droplet, 
@@ -12,10 +14,106 @@ import {
   Clock, 
   DoorOpen,
   ArrowRight,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Wrench,
+  AlertTriangle,
+  CheckCircle2
 } from "lucide-react";
 
-export const ComplaintCard = ({ complaint }) => {
+export const ComplaintCard = ({ complaint, onRefresh }) => {
+  const { isAdmin } = useAuth();
+  const [isSupervising, setIsSupervising] = useState(false);
+
+  const handleQuickReassign = async () => {
+    try {
+      const users = await api.auth.getAllUsers();
+      const staffMembers = (users || []).filter((u) => u.role === "staff");
+      if (staffMembers.length === 0) {
+        alert("No technician accounts found in database.");
+        return;
+      }
+      const optionsText = staffMembers
+        .map((s, idx) => `${idx + 1}. ${s.name || s.full_name} (${s.assigned_unit || "Operations"})`)
+        .join("\n");
+      const choice = window.prompt(
+        `Select Technician to Reassign:\n${optionsText}\n\nEnter number (1-${staffMembers.length}):`,
+        "1"
+      );
+      if (!choice) return;
+      const selected = staffMembers[parseInt(choice, 10) - 1];
+      if (!selected) {
+        alert("Invalid selection number.");
+        return;
+      }
+      const note = window.prompt(
+        "Supervisory Note for Reassignment:",
+        "Warden reallocated ticket for expedited technical handling."
+      );
+      if (note === null) return;
+      setIsSupervising(true);
+      await api.complaints.reassign(complaint.id, {
+        staff_id: selected.id,
+        note: note.trim() || undefined,
+      });
+      if (onRefresh) onRefresh();
+    } catch (err) {
+      alert(err.message || "Reassignment failed");
+    } finally {
+      setIsSupervising(false);
+    }
+  };
+
+  const handleQuickOverridePriority = async () => {
+    try {
+      const choice = window.prompt(
+        "Override Escalation Priority:\n1: Standard (Level 1)\n2: High Escalation (Level 2)\n3: Critical Emergency (Level 3)\n\nEnter 1, 2, or 3:",
+        "2"
+      );
+      if (!choice) return;
+      const level = parseInt(choice, 10);
+      if (![1, 2, 3].includes(level)) {
+        alert("Invalid level. Choose 1, 2, or 3.");
+        return;
+      }
+      const note = window.prompt(
+        "Supervisory Note for Priority Override:",
+        `Warden elevated escalation to Level ${level}.`
+      );
+      if (note === null) return;
+      setIsSupervising(true);
+      await api.complaints.overridePriority(complaint.id, {
+        escalation_level: level,
+        note: note.trim() || undefined,
+      });
+      if (onRefresh) onRefresh();
+    } catch (err) {
+      alert(err.message || "Priority override failed");
+    } finally {
+      setIsSupervising(false);
+    }
+  };
+
+  const handleQuickForceClose = async () => {
+    try {
+      const reason = window.prompt(
+        "Enter administrative closure remarks (min 5 characters):",
+        "Warden administrative resolution verified on-site."
+      );
+      if (reason === null) return;
+      const note = reason.trim();
+      if (note.length < 5) {
+        alert("Please provide at least 5 characters for administrative remarks.");
+        return;
+      }
+      setIsSupervising(true);
+      await api.complaints.forceClose(complaint.id, { note });
+      if (onRefresh) onRefresh();
+    } catch (err) {
+      alert(err.message || "Force closure failed");
+    } finally {
+      setIsSupervising(false);
+    }
+  };
   const getCategoryConfig = (categoryName) => {
     switch (categoryName?.toLowerCase()) {
       case "electrical":
@@ -167,6 +265,63 @@ export const ComplaintCard = ({ complaint }) => {
           <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform duration-150" />
         </Link>
       </div>
+
+      {/* Warden Supervisory Action Bar */}
+      {isAdmin && (
+        <div 
+          className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between gap-1 text-[11px]" 
+          onClick={(e) => e.stopPropagation()}
+        >
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+            Warden:
+          </span>
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <button
+              type="button"
+              disabled={isSupervising}
+              onClick={(e) => {
+                e.preventDefault();
+                handleQuickReassign();
+              }}
+              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-[11px] font-semibold border border-indigo-200/60 transition-colors disabled:opacity-50 cursor-pointer"
+              title="Reassign Technician"
+            >
+              <Wrench className="w-3 h-3 text-indigo-500" />
+              <span>Reassign</span>
+            </button>
+
+            <button
+              type="button"
+              disabled={isSupervising}
+              onClick={(e) => {
+                e.preventDefault();
+                handleQuickOverridePriority();
+              }}
+              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 text-[11px] font-semibold border border-amber-200/60 transition-colors disabled:opacity-50 cursor-pointer"
+              title="Override Priority"
+            >
+              <AlertTriangle className="w-3 h-3 text-amber-600" />
+              <span>Priority</span>
+            </button>
+
+            {complaint.status !== "CLOSED" && (
+              <button
+                type="button"
+                disabled={isSupervising}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleQuickForceClose();
+                }}
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-[11px] font-semibold border border-rose-200/60 transition-colors disabled:opacity-50 cursor-pointer"
+                title="Force Close with Note"
+              >
+                <CheckCircle2 className="w-3 h-3 text-rose-600" />
+                <span>Force Close</span>
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

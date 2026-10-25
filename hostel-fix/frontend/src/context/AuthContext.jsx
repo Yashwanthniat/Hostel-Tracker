@@ -4,7 +4,14 @@ import { api } from "../lib/api";
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    try {
+      const cached = localStorage.getItem("hostelfix_user") || sessionStorage.getItem("hostelfix_user");
+      return cached ? JSON.parse(cached) : null;
+    } catch (e) {
+      return null;
+    }
+  });
   const [loading, setLoading] = useState(true);
 
   const fetchProfile = async () => {
@@ -17,10 +24,14 @@ export const AuthProvider = ({ children }) => {
 
     try {
       const profile = await api.auth.getMe();
+      localStorage.setItem("hostelfix_user", JSON.stringify(profile));
+      sessionStorage.setItem("hostelfix_user", JSON.stringify(profile));
       setUser(profile);
     } catch (err) {
       console.warn("Session expired or invalid token:", err.message);
       localStorage.removeItem("hostelfix_token");
+      localStorage.removeItem("hostelfix_user");
+      sessionStorage.removeItem("hostelfix_user");
       setUser(null);
     } finally {
       setLoading(false);
@@ -34,6 +45,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     const data = await api.auth.login(credentials);
     localStorage.setItem("hostelfix_token", data.token);
+    localStorage.setItem("hostelfix_user", JSON.stringify(data.user));
+    sessionStorage.setItem("hostelfix_user", JSON.stringify(data.user));
     setUser(data.user);
     return data.user;
   };
@@ -41,6 +54,8 @@ export const AuthProvider = ({ children }) => {
   const signup = async (userData) => {
     const data = await api.auth.signup(userData);
     localStorage.setItem("hostelfix_token", data.token);
+    localStorage.setItem("hostelfix_user", JSON.stringify(data.user));
+    sessionStorage.setItem("hostelfix_user", JSON.stringify(data.user));
     setUser(data.user);
     return data.user;
   };
@@ -52,8 +67,9 @@ export const AuthProvider = ({ children }) => {
       console.warn("Backend logout notification warning:", err.message);
     } finally {
       localStorage.removeItem("hostelfix_token");
+      sessionStorage.removeItem("hostelfix_user");
       sessionStorage.clear();
-      document.cookie = "hostelfix_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+      document.cookie = "hostelfix_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=Lax;";
       setUser(null);
     }
   };

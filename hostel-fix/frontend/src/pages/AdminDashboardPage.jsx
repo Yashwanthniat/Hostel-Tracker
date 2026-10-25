@@ -3,19 +3,16 @@ import { api } from "../lib/api";
 import { AIWeeklySummaryCard } from "../components/AIWeeklySummaryCard";
 import { AnalyticsChart } from "../components/AnalyticsChart";
 import { 
-  LayoutDashboard, 
   Flame, 
   AlertTriangle, 
   CheckCircle2, 
   Clock, 
-  Play, 
   RefreshCw,
   DoorOpen,
   ArrowUpRight,
-  TrendingUp,
-  ShieldAlert,
-  Activity,
-  Layers
+  FileSpreadsheet,
+  FileCode,
+  Zap,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -44,10 +41,10 @@ export const AdminDashboardPage = () => {
     }
   };
 
-  const loadAiSummary = async () => {
+  const loadAiSummary = async (force = false) => {
     setAiLoading(true);
     try {
-      const summary = await api.ai.getWeeklySummary();
+      const summary = await api.ai.getWeeklySummary(force);
       setWeeklySummary(summary);
     } catch (err) {
       console.error("AI summary error:", err);
@@ -71,90 +68,194 @@ export const AdminDashboardPage = () => {
     }
   };
 
+  const handleExportCSV = async () => {
+    try {
+      const complaints = await api.complaints.list();
+      if (!complaints || complaints.length === 0) {
+        alert("No complaints available to export.");
+        return;
+      }
+
+      const headers = [
+        "Complaint ID",
+        "Category",
+        "Room Number",
+        "Student Name",
+        "Assigned Technician",
+        "Status",
+        "Escalation Level",
+        "Created At",
+        "Resolved At",
+        "SLA Compliant"
+      ];
+
+      const rows = complaints.map((c) => {
+        const isSlaBreached = c.escalation_level > 0;
+        return [
+          `"${c.id}"`,
+          `"${c.category_name || "General"}"`,
+          `"${c.room_number || "Unspecified"}"`,
+          `"${c.student_name || "Anonymous"}"`,
+          `"${c.assigned_staff_name || "Unassigned"}"`,
+          `"${c.status}"`,
+          c.escalation_level || 0,
+          `"${c.created_at || ""}"`,
+          `"${c.resolved_at || "Open"}"`,
+          `"${isSlaBreached ? "NO (Breached)" : "YES (Compliant)"}"`
+        ];
+      });
+
+      const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `hostelfix_sla_compliance_audit_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      alert(err.message || "CSV Export failed");
+    }
+  };
+
+  const handleExportJSON = async () => {
+    try {
+      const complaints = await api.complaints.list();
+      const exportData = {
+        exportDate: new Date().toISOString(),
+        totalRecorded: complaints.length,
+        analyticsSummary: analytics?.totals || {},
+        complaints: complaints || [],
+      };
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
+      const downloadAnchor = document.createElement("a");
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `hostelfix_telemetry_${new Date().toISOString().slice(0, 10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    } catch (err) {
+      alert(err.message || "JSON Export failed");
+    }
+  };
+
   useEffect(() => {
     loadDashboardData();
   }, []);
 
   const totals = analytics?.totals || {};
+  const categorySlaDetails = analytics?.categorySlaDetails || {};
+
+  const ALL_CATEGORIES = [
+    { key: "electrical", label: "Electrical", icon: "⚡" },
+    { key: "plumbing", label: "Plumbing", icon: "🚿" },
+    { key: "cleaning", label: "Cleaning", icon: "🧹" },
+    { key: "furniture", label: "Furniture", icon: "🪑" },
+    { key: "laundry", label: "Laundry", icon: "🧺" },
+    { key: "internet", label: "Internet", icon: "🌐" },
+    { key: "mess", label: "Mess / Food", icon: "🍽️" },
+    { key: "other", label: "General", icon: "🔧" },
+  ];
 
   return (
     <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50 py-8 sm:py-10">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        {/* Module 3: Header & Clean Action Bar */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm">
           <div className="space-y-1">
             <div className="flex items-center gap-2.5">
               <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                Warden Operations Dashboard
+                Hostel Operations & Executive Analytics
               </h1>
               <span className="px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-800 text-xs font-bold border border-indigo-200/70 shadow-2xs">
-                Executive Portal
+                Executive Overview
               </span>
             </div>
             <p className="text-xs sm:text-sm text-slate-500 max-w-2xl font-normal">
-              Autonomous SLA enforcement telemetry, 24-hour escalation controls, and recurring issue hotspots.
+              Autonomous SLA telemetry, grievance resolution rates, and campus facility audit controls.
             </p>
           </div>
 
-          {/* Action Controls */}
-          <div className="flex items-center gap-2.5">
+          {/* Action Bar */}
+          <div className="flex items-center gap-2.5 flex-wrap">
             <button
               type="button"
               onClick={handleRunEscalationSweep}
               disabled={sweepLoading}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white text-xs font-semibold shadow-sm transition-all duration-150 disabled:opacity-50 cursor-pointer"
-              title="Force run 24-hour escalation engine sweep"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-slate-900 bg-white hover:bg-slate-50 active:bg-slate-100 text-slate-900 text-xs font-bold transition-all shadow-xs disabled:opacity-50 cursor-pointer"
+              title="Execute autonomous background 24-hour SLA audit"
             >
-              <Play className={`w-3.5 h-3.5 ${sweepLoading ? "animate-spin" : ""}`} />
-              <span>{sweepLoading ? "Running Sweep..." : "Run Escalation Sweep"}</span>
+              <Zap className={`w-3.5 h-3.5 text-amber-500 ${sweepLoading ? "animate-spin" : ""}`} />
+              <span>{sweepLoading ? "Auditing Campus..." : "⚡ Trigger Campus Maintenance Audit"}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 text-slate-700 text-xs font-semibold border border-slate-200 transition-colors cursor-pointer shadow-2xs"
+              title="Export SLA compliance audit in CSV format"
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Export CSV Report</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleExportJSON}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 text-slate-700 text-xs font-semibold border border-slate-200 transition-colors cursor-pointer shadow-2xs"
+              title="Export SLA telemetry in JSON format"
+            >
+              <FileCode className="w-3.5 h-3.5 text-indigo-600" />
+              <span>Export JSON</span>
             </button>
 
             <button
               type="button"
               onClick={loadDashboardData}
               disabled={loading}
-              className="p-2.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 shadow-sm transition-all duration-150 cursor-pointer"
-              title="Refresh Analytics"
+              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200 text-slate-700 shadow-2xs transition-all cursor-pointer"
+              title="Refresh Dashboard"
             >
-              <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin text-indigo-600" : ""}`} />
+              <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin text-indigo-600" : ""}`} />
             </button>
           </div>
         </div>
 
-        {/* Sweep Result Banner */}
+        {/* Audit Confirmation Toast Banner */}
         {sweepResult && (
-          <div className="p-4 bg-emerald-50 border border-emerald-200/80 rounded-2xl flex items-center justify-between text-xs text-emerald-900 shadow-sm">
+          <div className="p-4 bg-emerald-50 border border-emerald-200/80 rounded-2xl flex items-center justify-between text-xs text-emerald-900 shadow-sm animate-in fade-in duration-200">
             <div className="flex items-center gap-2.5">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
               <span>
-                <strong>Sweep Completed:</strong> Evaluated {sweepResult.evaluated} active complaints.{" "}
+                <strong>Campus Maintenance Audit Completed:</strong> Evaluated {sweepResult.evaluated} active tickets.{" "}
                 {sweepResult.escalatedCount > 0
-                  ? `Auto-escalated ${sweepResult.escalatedCount} overdue complaint(s).`
-                  : "All active tickets remain within the 24-hour SLA window."}
+                  ? `Escalated ${sweepResult.escalatedCount} overdue ticket(s) breaching 24h SLA.`
+                  : "All active campus grievances are compliant with 24h resolution targets."}
               </span>
             </div>
             <button
               type="button"
               onClick={() => setSweepResult(null)}
-              className="text-emerald-700 font-bold hover:underline ml-4"
+              className="text-emerald-700 font-bold hover:underline ml-4 cursor-pointer"
             >
               Dismiss
             </button>
           </div>
         )}
 
-        {/* KPI Cards Grid */}
+        {/* Executive KPI Strip */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
           <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 block mb-1">
-              Total Logged
+              Total Recorded
             </span>
             <p className="text-2xl font-bold text-slate-900 tracking-tight">{totals.total || 0}</p>
           </div>
 
           <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-sky-600 block mb-1">
-              Open Queue
+              Open Pool
             </span>
             <p className="text-2xl font-bold text-sky-700 tracking-tight">{totals.open || 0}</p>
           </div>
@@ -168,14 +269,14 @@ export const AdminDashboardPage = () => {
 
           <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 block mb-1">
-              Pending Review
+              Student Review
             </span>
             <p className="text-2xl font-bold text-indigo-700 tracking-tight">{totals.resolvedPending || 0}</p>
           </div>
 
           <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-emerald-600 block mb-1">
-              Closed Tickets
+              Closed & Verified
             </span>
             <p className="text-2xl font-bold text-emerald-700 tracking-tight">{totals.closed || 0}</p>
           </div>
@@ -183,18 +284,100 @@ export const AdminDashboardPage = () => {
           <div className="bg-white p-4 rounded-2xl border border-rose-200/80 shadow-sm">
             <span className="text-[10px] font-semibold uppercase tracking-wider text-rose-600 block mb-1 flex items-center gap-1">
               <AlertTriangle className="w-3 h-3 text-rose-500" />
-              Escalation Rate
+              SLA Breach Rate
             </span>
             <p className="text-2xl font-bold text-rose-700 tracking-tight">{totals.escalationRate || 0}%</p>
           </div>
         </div>
 
-        {/* Gemini AI Weekly Summary Digest Card */}
+        {/* Gemini AI Operations Intelligence Digest Card */}
         <AIWeeklySummaryCard
           summary={weeklySummary}
           isLoading={aiLoading}
-          onRefresh={loadAiSummary}
+          onRefresh={() => loadAiSummary(true)}
         />
+
+        {/* Module 3: Category Mean Resolution SLA (Rolling 30 Days) */}
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100">
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center shadow-2xs">
+                <Clock className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-base font-bold text-slate-900 tracking-tight">
+                  Category Mean Resolution SLA (Rolling 30 Days)
+                </h2>
+                <p className="text-xs text-slate-500">
+                  Turnaround telemetry calculated strictly for completed repairs in the past 30 days.
+                </p>
+              </div>
+            </div>
+            <span className="text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-xl border border-emerald-200/60 shadow-2xs">
+              Target SLA: &lt; 24h
+            </span>
+          </div>
+
+          {/* Category SLA Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            {ALL_CATEGORIES.map((cat) => {
+              const slaInfo = categorySlaDetails[cat.key] || {
+                hasCompleted: false,
+                meanHours: null,
+                openCount: 0,
+                statusPill: "No Active Tickets",
+                subtext: "Queue clear",
+              };
+
+              return (
+                <div
+                  key={cat.key}
+                  className="p-4 bg-slate-50/70 border border-slate-200/80 rounded-2xl transition-all duration-150 hover:bg-white hover:shadow-xs space-y-2.5"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-800 capitalize flex items-center gap-1.5">
+                      <span>{cat.icon}</span>
+                      <span>{cat.label}</span>
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-mono">
+                      30d SLA
+                    </span>
+                  </div>
+
+                  <div>
+                    {slaInfo.hasCompleted ? (
+                      <div className="space-y-1">
+                        <div className="flex items-baseline gap-1.5">
+                          <span className="text-2xl font-extrabold text-slate-900">
+                            {slaInfo.meanHours}h
+                          </span>
+                          <span className="text-[11px] font-semibold text-emerald-600">
+                            mean
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-500 font-medium">
+                          {slaInfo.subtext}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="space-y-1">
+                        <div className="pt-0.5">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200/80 text-[11px] font-bold shadow-2xs">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                            <span>{slaInfo.openCount > 0 ? "Active (Awaiting Fix)" : "No Active Tickets"}</span>
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-500 font-medium">
+                          {slaInfo.openCount > 0 ? `${slaInfo.openCount} open in queue` : "0 in queue"}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
 
         {/* Visual Analytics Charts */}
         {analytics && <AnalyticsChart data={analytics} />}
@@ -203,7 +386,7 @@ export const AdminDashboardPage = () => {
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-2xl bg-rose-50 border border-rose-100 text-rose-600 flex items-center justify-center shadow-2xs">
+              <div className="w-9 h-9 rounded-xl bg-rose-50 border border-rose-100 text-rose-600 flex items-center justify-center shadow-2xs">
                 <Flame className="w-5 h-5" />
               </div>
               <div>
@@ -271,3 +454,4 @@ export const AdminDashboardPage = () => {
   );
 };
 
+export default AdminDashboardPage;

@@ -139,6 +139,7 @@ export const ComplaintForm = ({
       };
 
       const result = await api.complaints.create(payload);
+      window.dispatchEvent(new Event("notification-refresh"));
       
       try {
         confetti({

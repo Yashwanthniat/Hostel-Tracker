@@ -58,10 +58,18 @@ export const api = {
     get: (id) => request(`/api/complaints/${id}`),
     create: (complaintData) => request("/api/complaints", { method: "POST", body: JSON.stringify(complaintData) }),
     updateStatus: (id, payload) => request(`/api/complaints/${id}/status`, { method: "PATCH", body: JSON.stringify(payload) }),
+    reassign: (id, payload) => request(`/api/complaints/${id}/reassign`, { method: "PATCH", body: JSON.stringify(payload) }),
+    overridePriority: (id, payload) => request(`/api/complaints/${id}/override-priority`, { method: "PATCH", body: JSON.stringify(payload) }),
+    forceClose: (id, payload) => request(`/api/complaints/${id}/force-close`, { method: "PATCH", body: JSON.stringify(payload) }),
+  },
+  notifications: {
+    list: () => request("/api/notifications"),
+    markAllRead: () => request("/api/notifications/read-all", { method: "PATCH" }),
+    markRead: (id) => request(`/api/notifications/${id}/read`, { method: "PATCH" }),
   },
   ai: {
     suggestCategory: (description) => request("/api/ai/suggest-category", { method: "POST", body: JSON.stringify({ description }) }),
-    getWeeklySummary: () => request("/api/ai/weekly-summary"),
+    getWeeklySummary: (force = false) => request(`/api/ai/weekly-summary${force ? "?force=true" : ""}`),
   },
   analytics: {
     getOverview: () => request("/api/analytics/overview"),

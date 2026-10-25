@@ -100,4 +100,76 @@ router.patch("/:id/status", authenticate, validate(statusUpdateSchema), async (r
   }
 });
 
+// PATCH /api/complaints/:id/reassign - Warden Supervisory Action: Reassign Technician
+router.patch("/:id/reassign", authenticate, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ error: "Only Warden / Admin can reassign technicians" });
+    }
+    const { staff_id, note } = req.body;
+    if (!staff_id) return res.status(400).json({ error: "staff_id is required" });
+
+    const updated = await dbService.reassignTechnician({
+      complaint_id: req.params.id,
+      staff_id,
+      admin_id: req.user.id,
+      note,
+    });
+
+    res.json({
+      message: "Technician reassigned successfully",
+      complaint: updated,
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message || "Failed to reassign technician" });
+  }
+});
+
+// PATCH /api/complaints/:id/override-priority - Warden Supervisory Action: Override Priority / Escalation
+router.patch("/:id/override-priority", authenticate, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ error: "Only Warden / Admin can override ticket priority" });
+    }
+    const { escalation_level, note } = req.body;
+    if (escalation_level === undefined) return res.status(400).json({ error: "escalation_level is required" });
+
+    const updated = await dbService.overridePriority({
+      complaint_id: req.params.id,
+      escalation_level,
+      admin_id: req.user.id,
+      note,
+    });
+
+    res.json({
+      message: "Priority escalation updated",
+      complaint: updated,
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message || "Failed to override priority" });
+  }
+});
+
+// PATCH /api/complaints/:id/force-close - Warden Supervisory Action: Force Close with Note
+router.patch("/:id/force-close", authenticate, async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ error: "Only Warden / Admin can force close tickets" });
+    }
+    const { note } = req.body;
+    const updated = await dbService.forceCloseComplaint({
+      complaint_id: req.params.id,
+      admin_id: req.user.id,
+      note,
+    });
+
+    res.json({
+      message: "Ticket force-closed by warden with administrative audit note",
+      complaint: updated,
+    });
+  } catch (err) {
+    res.status(400).json({ error: err.message || "Failed to force close complaint" });
+  }
+});
+
 export default router;

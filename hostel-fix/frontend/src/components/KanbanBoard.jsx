@@ -398,7 +398,9 @@ export const KanbanBoard = ({
                 <span>{quickFilter !== "all" ? "No matching complaints in open queue" : "No complaints awaiting pickup"}</span>
               </div>
             ) : (
-              displayOpenList.map((c) => <ComplaintCard key={c.id} complaint={c} />)
+              displayOpenList.map((c) => (
+                <ComplaintCard key={c.id} complaint={c} onRefresh={onRefresh} />
+              ))
             )}
           </div>
         </div>
@@ -424,7 +426,9 @@ export const KanbanBoard = ({
                 <span>{quickFilter !== "all" ? "No matching in-progress complaints" : "No tasks currently being worked on"}</span>
               </div>
             ) : (
-              displayInProgressList.map((c) => <ComplaintCard key={c.id} complaint={c} />)
+              displayInProgressList.map((c) => (
+                <ComplaintCard key={c.id} complaint={c} onRefresh={onRefresh} />
+              ))
             )}
           </div>
         </div>
@@ -450,7 +454,9 @@ export const KanbanBoard = ({
                 <span>{quickFilter !== "all" ? "No matching resolved complaints" : "No resolved complaints yet"}</span>
               </div>
             ) : (
-              displayResolvedList.map((c) => <ComplaintCard key={c.id} complaint={c} />)
+              displayResolvedList.map((c) => (
+                <ComplaintCard key={c.id} complaint={c} onRefresh={onRefresh} />
+              ))
             )}
           </div>
         </div>

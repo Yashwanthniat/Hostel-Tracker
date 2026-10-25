@@ -29,15 +29,19 @@ router.post("/signup", validate(signupSchema), async (req, res) => {
       { expiresIn: "7d" }
     );
 
+    const assigned_unit = user.room_number || (user.role === "staff" ? "Maintenance Operations" : user.role === "admin" ? "Chief Warden Office" : "Room B-204");
+
     res.status(201).json({
       message: "Account created successfully",
       token,
       user: {
         id: user.id,
         email: user.email,
+        name: user.full_name,
         full_name: user.full_name,
         role: user.role,
         room_number: user.room_number,
+        assigned_unit,
       },
     });
   } catch (err) {
@@ -49,7 +53,8 @@ router.post("/signup", validate(signupSchema), async (req, res) => {
 router.post("/login", validate(loginSchema), async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await dbService.verifyPassword(email, password);
+    const normalizedEmail = (email || "").trim().toLowerCase();
+    const user = await dbService.verifyPassword(normalizedEmail, password);
 
     if (!user) {
       return res.status(401).json({ error: "Invalid email or password" });
@@ -61,15 +66,28 @@ router.post("/login", validate(loginSchema), async (req, res) => {
       { expiresIn: "7d" }
     );
 
+    // Set secure HTTP-only cookie for session persistence
+    res.cookie("hostelfix_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/",
+    });
+
+    const assigned_unit = user.room_number || (user.role === "staff" ? "Maintenance Operations" : user.role === "admin" ? "Chief Warden Office" : "Room B-204");
+
     res.json({
       message: "Login successful",
       token,
       user: {
         id: user.id,
         email: user.email,
+        name: user.full_name,
         full_name: user.full_name,
         role: user.role,
         room_number: user.room_number,
+        assigned_unit,
       },
     });
   } catch (err) {
@@ -79,7 +97,12 @@ router.post("/login", validate(loginSchema), async (req, res) => {
 
 // Logout / Destroy Session
 router.post("/logout", (req, res) => {
-  res.clearCookie("hostelfix_token", { path: "/" });
+  res.clearCookie("hostelfix_token", {
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  });
   res.status(200).json({ message: "Session destroyed successfully" });
 });
 
@@ -89,12 +112,16 @@ router.get("/me", authenticate, async (req, res) => {
     const user = await dbService.getUserById(req.user.id);
     if (!user) return res.status(404).json({ error: "User not found" });
 
+    const assigned_unit = user.room_number || (user.role === "staff" ? "Maintenance Operations" : user.role === "admin" ? "Chief Warden Office" : "Room B-204");
+
     res.json({
       id: user.id,
       email: user.email,
+      name: user.full_name,
       full_name: user.full_name,
       role: user.role,
       room_number: user.room_number,
+      assigned_unit,
     });
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch profile" });

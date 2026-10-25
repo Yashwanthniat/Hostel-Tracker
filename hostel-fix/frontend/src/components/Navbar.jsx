@@ -11,6 +11,7 @@ import {
   Kanban,
   Sparkles
 } from "lucide-react";
+import { NotificationBell } from "./NotificationBell";
 
 export const Navbar = () => {
   const { user, isAuthenticated, logout, isStudent, isStaff, isAdmin } = useAuth();
@@ -47,49 +48,68 @@ export const Navbar = () => {
           </div>
         </Link>
 
-        {/* Navigation Links */}
+        {/* Navigation Links - Strict Role Separation */}
         {isAuthenticated && (
           <nav className="hidden md:flex items-center gap-1 bg-slate-100/80 p-1 rounded-2xl border border-slate-200/60 shadow-2xs">
-            <Link
-              to="/"
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-150 ${
-                isActive("/")
-                  ? "bg-white text-indigo-600 shadow-soft font-bold"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
-              }`}
-            >
-              <Kanban className="w-3.5 h-3.5" />
-              <span>Complaint Board</span>
-            </Link>
-
+            {/* Student Links */}
             {isStudent && (
-              <Link
-                to="/report"
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-150 ${
-                  isActive("/report")
-                    ? "bg-white text-indigo-600 shadow-soft font-bold"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
-                }`}
-              >
-                <PlusCircle className="w-3.5 h-3.5" />
-                <span>Report Issue</span>
-              </Link>
+              <>
+                <Link
+                  to="/"
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-150 ${
+                    isActive("/")
+                      ? "bg-white text-indigo-600 shadow-soft font-bold"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
+                  }`}
+                >
+                  <Kanban className="w-3.5 h-3.5" />
+                  <span>Complaint Board</span>
+                </Link>
+
+                <Link
+                  to="/report"
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-150 ${
+                    isActive("/report")
+                      ? "bg-white text-indigo-600 shadow-soft font-bold"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
+                  }`}
+                >
+                  <PlusCircle className="w-3.5 h-3.5" />
+                  <span>Report Issue</span>
+                </Link>
+              </>
             )}
 
-            {(isStaff || isAdmin) && (
-              <Link
-                to="/staff/queue"
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-150 ${
-                  isActive("/staff/queue")
-                    ? "bg-white text-indigo-600 shadow-soft font-bold"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
-                }`}
-              >
-                <Wrench className="w-3.5 h-3.5" />
-                <span>Maintenance Queue</span>
-              </Link>
+            {/* Staff / Technician Links */}
+            {isStaff && (
+              <>
+                <Link
+                  to="/"
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-150 ${
+                    isActive("/")
+                      ? "bg-white text-indigo-600 shadow-soft font-bold"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
+                  }`}
+                >
+                  <Kanban className="w-3.5 h-3.5" />
+                  <span>Complaint Board</span>
+                </Link>
+
+                <Link
+                  to="/staff/queue"
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-150 ${
+                    isActive("/staff/queue")
+                      ? "bg-white text-indigo-600 shadow-soft font-bold"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
+                  }`}
+                >
+                  <Wrench className="w-3.5 h-3.5" />
+                  <span>Maintenance Queue</span>
+                </Link>
+              </>
             )}
 
+            {/* Warden / Admin Links (Maintenance Queue removed to avoid clutter) */}
             {isAdmin && (
               <>
                 <Link
@@ -105,6 +125,18 @@ export const Navbar = () => {
                 </Link>
 
                 <Link
+                  to="/"
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-150 ${
+                    isActive("/")
+                      ? "bg-white text-indigo-600 shadow-soft font-bold"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-white/40"
+                  }`}
+                >
+                  <Kanban className="w-3.5 h-3.5" />
+                  <span>Incident Operations Board</span>
+                </Link>
+
+                <Link
                   to="/admin/users"
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold tracking-tight transition-all duration-150 ${
                     isActive("/admin/users")
@@ -113,36 +145,39 @@ export const Navbar = () => {
                   }`}
                 >
                   <Users className="w-3.5 h-3.5" />
-                  <span>Users</span>
+                  <span>User Directory</span>
                 </Link>
               </>
             )}
           </nav>
         )}
 
-        {/* User profile & Auth Controls */}
+        {/* User Profile, Notifications & Auth Controls */}
         <div className="flex items-center gap-3">
           {isAuthenticated ? (
             <div className="flex items-center gap-2.5">
-              {/* Profile Pill */}
+              {/* In-Portal Notification Bell */}
+              <NotificationBell />
+
+              {/* Profile Pill with dynamic user attribution */}
               <Link
                 to="/profile"
                 className="flex items-center gap-2.5 p-1.5 pr-3 rounded-2xl bg-white/70 hover:bg-white border border-slate-200/80 shadow-2xs hover:shadow-soft transition-all duration-150"
               >
                 <div className="w-7 h-7 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-white flex items-center justify-center font-bold text-xs shadow-xs">
-                  {user?.full_name?.charAt(0) || "U"}
+                  {(user?.name || user?.full_name || "U").charAt(0).toUpperCase()}
                 </div>
                 <div className="text-left hidden sm:block">
                   <p className="text-xs font-bold text-slate-800 leading-tight">
-                    {user?.full_name?.split(" ")[0]}
+                    {user?.name || user?.full_name || "Authenticated User"}
                   </p>
                   <div className="flex items-center gap-1.5">
                     <span className="text-[10px] font-semibold text-indigo-600 capitalize">
                       {user?.role}
                     </span>
-                    {user?.room_number && (
+                    {(user?.room_number || user?.assigned_unit) && (
                       <span className="text-[10px] text-slate-400 font-medium">
-                        • {user.room_number}
+                        • {user.room_number || user.assigned_unit}
                       </span>
                     )}
                   </div>

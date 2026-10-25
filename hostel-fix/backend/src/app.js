@@ -8,6 +8,7 @@ import complaintRoutes from "./routes/complaints.js";
 import aiRoutes from "./routes/ai.js";
 import analyticsRoutes from "./routes/analytics.js";
 import escalateRoutes from "./routes/escalate.js";
+import notificationsRoutes from "./routes/notifications.js";
 import { escalationService } from "./services/escalationService.js";
 
 dotenv.config();
@@ -49,6 +50,7 @@ app.use("/api/complaints", complaintRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/escalate", escalateRoutes);
+app.use("/api/notifications", notificationsRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {

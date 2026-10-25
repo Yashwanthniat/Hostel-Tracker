@@ -12,9 +12,8 @@ export const BoardPage = () => {
   const [error, setError] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [myOnly, setMyOnly] = useState(false);
-
-  const { isStudent } = useAuth();
+  const { user, isStudent, isAdmin } = useAuth();
+  const [myOnly, setMyOnly] = useState(isStudent);
 
   const loadData = async () => {
     setLoading(true);
@@ -55,13 +54,13 @@ export const BoardPage = () => {
 
   return (
     <div className="relative min-h-[calc(100vh-4rem)] bg-slate-50 pt-8 pb-12 sm:pt-10 sm:pb-14">
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         {/* Page Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">
           <div className="space-y-1">
             <div className="flex items-center gap-2.5">
               <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                Incident Operations Board
+                {isAdmin ? "Incident Operations Command Board" : isStudent ? "Hostel Complaint Board" : "Technician Operations Board"}
               </h1>
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold border border-emerald-200 tracking-tight shadow-xs transition-all duration-200">
                 <span className="relative flex h-2 w-2 flex-shrink-0">
@@ -98,6 +97,38 @@ export const BoardPage = () => {
             )}
           </div>
         </div>
+
+        {/* Student Campus Notice & Filter Strip */}
+        {isStudent && (
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-indigo-50/90 via-violet-50/70 to-slate-50 border border-indigo-200/70 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded-md bg-indigo-600 text-white text-[10px] font-bold uppercase tracking-wider">
+                  Campus Notice
+                </span>
+                <h3 className="text-xs sm:text-sm font-bold text-slate-900">
+                  Autonomous 24-Hour SLA Protocol Active · Daily Sweeps at 09:00 & 16:00
+                </h3>
+              </div>
+              <p className="text-xs text-slate-600 max-w-3xl leading-relaxed">
+                Every grievance filed has an immutable digital record. Technicians must address open tickets within 24 hours. If unsatisfied with completed work, you can dispute the resolution for immediate senior re-review.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => setMyOnly(!myOnly)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
+                  myOnly 
+                    ? "bg-indigo-600 text-white border-indigo-600 shadow-xs" 
+                    : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50"
+                }`}
+              >
+                {myOnly ? "✓ Showing My Complaints" : "Show: My Complaints Only"}
+              </button>
+            </div>
+          </div>
+        )}
 
         {error && (
           <div className="p-4 bg-rose-50/80 border border-rose-200/80 rounded-2xl text-xs text-rose-700 shadow-2xs">

@@ -162,7 +162,7 @@ export const AnalyticsChart = ({ data }) => {
               />
               <YAxis tick={{ fontSize: 11, fill: "#64748b" }} unit="h" allowDecimals={false} domain={[0, "auto"]} />
               <Tooltip
-                formatter={(val) => [val === 0 ? "0 hours (no resolved tickets)" : `${val} hours`, "Mean Resolution"]}
+                formatter={(val) => [val === 0 ? "Active (Awaiting Fix) · 0 completed in 30d" : `${val} hours`, "Mean Turnaround"]}
                 contentStyle={{ backgroundColor: "#0f172a", borderRadius: "14px", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontSize: "12px", boxShadow: "0 10px 25px -5px rgba(0,0,0,0.3)" }}
               />
               <Bar dataKey="hours" radius={[6, 6, 0, 0]}>

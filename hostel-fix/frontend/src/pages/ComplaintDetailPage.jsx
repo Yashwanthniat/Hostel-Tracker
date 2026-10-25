@@ -27,6 +27,14 @@ export const ComplaintDetailPage = () => {
   const [error, setError] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
 
+  const [isSupervising, setIsSupervising] = useState(false);
+  const [reassignModalOpen, setReassignModalOpen] = useState(false);
+  const [priorityModalOpen, setPriorityModalOpen] = useState(false);
+  const [staffList, setStaffList] = useState([]);
+  const [selectedStaffId, setSelectedStaffId] = useState("");
+  const [selectedPriority, setSelectedPriority] = useState(1);
+  const [supervisoryNote, setSupervisoryNote] = useState("");
+
   const loadComplaint = async () => {
     setLoading(true);
     setError("");
@@ -40,9 +48,23 @@ export const ComplaintDetailPage = () => {
     }
   };
 
+  const loadStaffList = async () => {
+    try {
+      const users = await api.auth.getAllUsers();
+      const staffOnly = (users || []).filter((u) => u.role === "staff");
+      setStaffList(staffOnly);
+      if (staffOnly.length > 0) setSelectedStaffId(staffOnly[0].id);
+    } catch (e) {
+      console.warn("Unable to fetch staff list:", e);
+    }
+  };
+
   useEffect(() => {
     loadComplaint();
-  }, [id]);
+    if (user?.role === "admin") {
+      loadStaffList();
+    }
+  }, [id, user?.role]);
 
   const handleStatusUpdate = async ({ new_status, note }) => {
     setIsUpdating(true);
@@ -59,7 +81,7 @@ export const ComplaintDetailPage = () => {
   const handleStudentAction = async (newStatus) => {
     let note = "";
     if (newStatus === "CLOSED") {
-      note = "Student verified repair in room and accepted resolution.";
+      note = "Student verified repair in room and confirmed successful resolution.";
     } else if (newStatus === "REOPENED") {
       const reason = window.prompt("Please state why you are disputing this resolution (min 5 characters):");
       if (reason === null) return;
@@ -74,6 +96,73 @@ export const ComplaintDetailPage = () => {
       await handleStatusUpdate({ new_status: newStatus, note });
     } catch (err) {
       alert(err.message || "Failed to update complaint status");
+    }
+  };
+
+  const handleStaffReinspect = async () => {
+    try {
+      await handleStatusUpdate({
+        new_status: "IN_PROGRESS",
+        note: "Technician commenced urgent re-inspection of disputed work in room.",
+      });
+    } catch (err) {
+      alert(err.message || "Failed to start re-inspection");
+    }
+  };
+
+  const handleWardenReassignSubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedStaffId) return;
+    setIsSupervising(true);
+    try {
+      const res = await api.complaints.reassign(id, {
+        staff_id: selectedStaffId,
+        note: supervisoryNote.trim() || "Warden reallocated ticket for expedited technical handling.",
+      });
+      setComplaint(res.complaint);
+      setReassignModalOpen(false);
+      setSupervisoryNote("");
+    } catch (err) {
+      alert(err.message || "Reassignment failed");
+    } finally {
+      setIsSupervising(false);
+    }
+  };
+
+  const handleWardenOverridePrioritySubmit = async (e) => {
+    e.preventDefault();
+    setIsSupervising(true);
+    try {
+      const res = await api.complaints.overridePriority(id, {
+        escalation_level: Number(selectedPriority),
+        note: supervisoryNote.trim() || `Warden prioritized escalation level to ${selectedPriority}.`,
+      });
+      setComplaint(res.complaint);
+      setPriorityModalOpen(false);
+      setSupervisoryNote("");
+    } catch (err) {
+      alert(err.message || "Priority override failed");
+    } finally {
+      setIsSupervising(false);
+    }
+  };
+
+  const handleWardenForceClose = async () => {
+    const reason = window.prompt("Enter administrative closure remarks (min 5 characters):");
+    if (reason === null) return;
+    const note = reason.trim();
+    if (note.length < 5) {
+      alert("Please provide at least 5 characters for administrative remarks.");
+      return;
+    }
+    setIsSupervising(true);
+    try {
+      const res = await api.complaints.forceClose(id, { note });
+      setComplaint(res.complaint);
+    } catch (err) {
+      alert(err.message || "Force closure failed");
+    } finally {
+      setIsSupervising(false);
     }
   };
 
@@ -138,19 +227,19 @@ export const ComplaintDetailPage = () => {
                 type="button"
                 disabled={isUpdating}
                 onClick={() => handleStudentAction("CLOSED")}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white shadow-soft shadow-emerald-600/20 transition-all disabled:opacity-50 cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white shadow-soft shadow-emerald-600/20 transition-all disabled:opacity-50 cursor-pointer"
               >
                 <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>Accept & Close</span>
+                <span>✅ Confirm Fix & Close Ticket</span>
               </button>
               <button
                 type="button"
                 disabled={isUpdating}
                 onClick={() => handleStudentAction("REOPENED")}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white shadow-soft shadow-rose-600/20 transition-all disabled:opacity-50 cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white shadow-soft shadow-rose-600/20 transition-all disabled:opacity-50 cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>Dispute Issue</span>
+                <span>⚠️ Dispute Work</span>
               </button>
             </div>
           </div>
@@ -177,12 +266,6 @@ export const ComplaintDetailPage = () => {
             </div>
 
             <div className="flex items-center gap-2 flex-wrap">
-              {complaint.status === "REOPENED" && (
-                <span className="bg-rose-50 text-rose-700 border border-rose-200 px-3 py-1 rounded-full text-xs font-semibold inline-flex items-center gap-1.5 shadow-2xs">
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  <span>Disputed</span>
-                </span>
-              )}
               <StatusBadge
                 status={complaint.status}
                 escalationLevel={complaint.escalation_level}
@@ -346,37 +429,241 @@ export const ComplaintDetailPage = () => {
               </p>
             </div>
 
+            {/* Contextual Actions based on Role and Status */}
             {user?.role === "student" && complaint.status === "RESOLVED_PENDING" ? (
+              /* Stage 3: Student Verification Controls */
               <div className="flex items-center gap-2 flex-wrap">
                 <button
                   type="button"
                   disabled={isUpdating}
                   onClick={() => handleStudentAction("CLOSED")}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white shadow-soft transition-all disabled:opacity-50 cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white shadow-soft shadow-emerald-600/20 transition-all disabled:opacity-50 cursor-pointer"
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Accept & Close</span>
+                  <span>✅ Confirm Fix & Close Ticket</span>
                 </button>
                 <button
                   type="button"
                   disabled={isUpdating}
                   onClick={() => handleStudentAction("REOPENED")}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white shadow-soft transition-all disabled:opacity-50 cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white shadow-soft shadow-rose-600/20 transition-all disabled:opacity-50 cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
-                  <span>Dispute Issue</span>
+                  <span>⚠️ Dispute Work</span>
+                </button>
+              </div>
+            ) : complaint.status === "REOPENED" && user?.role === "staff" ? (
+              /* Stage 2: Staff Dispute Re-Inspection */
+              <div className="flex items-center gap-2 flex-wrap">
+                <button
+                  type="button"
+                  disabled={isUpdating}
+                  onClick={handleStaffReinspect}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white shadow-soft shadow-indigo-600/20 transition-all disabled:opacity-50 cursor-pointer"
+                >
+                  <Wrench className="w-3.5 h-3.5" />
+                  <span>🔧 Start Re-Inspection</span>
+                </button>
+              </div>
+            ) : complaint.status === "REOPENED" && user?.role === "admin" ? (
+              /* Stage 2: Warden Dispute Supervisory Actions */
+              <div className="flex items-center gap-2 flex-wrap">
+                <button
+                  type="button"
+                  disabled={isSupervising}
+                  onClick={() => setReassignModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-soft shadow-indigo-600/20 transition-all cursor-pointer"
+                >
+                  <Wrench className="w-3.5 h-3.5" />
+                  <span>⚡ Reassign Unit</span>
+                </button>
+                <button
+                  type="button"
+                  disabled={isSupervising}
+                  onClick={handleWardenForceClose}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-soft shadow-emerald-600/20 transition-all cursor-pointer"
+                >
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>Administrative Override & Resolve</span>
                 </button>
               </div>
             ) : (
-              <StatusUpdateDropdown
-                complaint={complaint}
-                currentUser={user}
-                onStatusUpdate={handleStatusUpdate}
-                isUpdating={isUpdating}
-              />
+              <div className="flex items-center gap-2 flex-wrap">
+                {user?.role === "admin" && (
+                  <>
+                    <button
+                      type="button"
+                      disabled={isSupervising}
+                      onClick={() => setReassignModalOpen(true)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer"
+                    >
+                      <Wrench className="w-3.5 h-3.5 text-slate-500" />
+                      <span>Reassign Technician</span>
+                    </button>
+                    <button
+                      type="button"
+                      disabled={isSupervising}
+                      onClick={() => setPriorityModalOpen(true)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors cursor-pointer"
+                    >
+                      <AlertCircle className="w-3.5 h-3.5 text-slate-500" />
+                      <span>Override Priority</span>
+                    </button>
+                  </>
+                )}
+                <StatusUpdateDropdown
+                  complaint={complaint}
+                  currentUser={user}
+                  onStatusUpdate={handleStatusUpdate}
+                  isUpdating={isUpdating}
+                />
+              </div>
             )}
           </div>
         </div>
+
+        {/* Modal: Warden Reassign Technician */}
+        {reassignModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 space-y-4 animate-in fade-in zoom-in-95 duration-150">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600">
+                    <Wrench className="w-4 h-4" />
+                  </div>
+                  <h3 className="font-bold text-sm text-slate-900">Reassign Maintenance Technician</h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setReassignModalOpen(false)}
+                  className="text-slate-400 hover:text-slate-600 text-sm font-bold"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handleWardenReassignSubmit} className="space-y-3.5">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Select Technician
+                  </label>
+                  <select
+                    value={selectedStaffId}
+                    onChange={(e) => setSelectedStaffId(e.target.value)}
+                    className="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    {staffList.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.full_name} ({s.email})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Supervisory Instructions / Notes
+                  </label>
+                  <textarea
+                    rows={3}
+                    placeholder="Provide specific directives for the assigned technician..."
+                    value={supervisoryNote}
+                    onChange={(e) => setSupervisoryNote(e.target.value)}
+                    className="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+
+                <div className="flex items-center justify-end gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setReassignModalOpen(false)}
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSupervising}
+                    className="px-4 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white shadow-soft disabled:opacity-50"
+                  >
+                    Confirm Reassignment
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Modal: Warden Override Priority */}
+        {priorityModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 space-y-4 animate-in fade-in zoom-in-95 duration-150">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div className="flex items-center gap-2">
+                  <div className="p-2 rounded-lg bg-rose-50 text-rose-600">
+                    <AlertCircle className="w-4 h-4" />
+                  </div>
+                  <h3 className="font-bold text-sm text-slate-900">Override Escalation Priority</h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setPriorityModalOpen(false)}
+                  className="text-slate-400 hover:text-slate-600 text-sm font-bold"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handleWardenOverridePrioritySubmit} className="space-y-3.5">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Escalation Level
+                  </label>
+                  <select
+                    value={selectedPriority}
+                    onChange={(e) => setSelectedPriority(Number(e.target.value))}
+                    className="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    <option value={0}>Level 0 - Normal Priority (Standard SLA)</option>
+                    <option value={1}>Level 1 - High Priority (Breached &gt;24h)</option>
+                    <option value={2}>Level 2 - Critical Warden Sweep</option>
+                    <option value={3}>Level 3 - Immediate Executive Intervention</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Supervisory Audit Remarks
+                  </label>
+                  <textarea
+                    rows={3}
+                    placeholder="Enter audit explanation for overriding priority..."
+                    value={supervisoryNote}
+                    onChange={(e) => setSupervisoryNote(e.target.value)}
+                    className="w-full px-3 py-2 text-xs border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+
+                <div className="flex items-center justify-end gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setPriorityModalOpen(false)}
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSupervising}
+                    className="px-4 py-1.5 rounded-xl text-xs font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-soft disabled:opacity-50"
+                  >
+                    Apply Priority Override
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
 
         {/* Immutable Audit Trail Section */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-6">

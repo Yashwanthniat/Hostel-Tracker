@@ -85,17 +85,56 @@
   ],
   "complaints": [
     {
+      "id": "2558fea6-5676-41d5-b042-a912f81a8d8d",
+      "student_id": "d0000000-0000-0000-0000-000000000001",
+      "category_id": 4,
+      "description": "Trash disposal overflow in Block B floor 2",
+      "photo_url": null,
+      "status": "OPEN",
+      "escalation_level": 0,
+      "assigned_staff_id": null,
+      "created_at": "2026-10-25T18:24:08.941Z",
+      "updated_at": "2026-10-25T18:24:08.941Z",
+      "resolved_at": null
+    },
+    {
+      "id": "de2cbdb0-72cf-4417-af6d-2f595432f57b",
+      "student_id": "d0000000-0000-0000-0000-000000000001",
+      "category_id": 4,
+      "description": "Corridor trash bin overflowing and spilled on 2nd floor Block B",
+      "photo_url": null,
+      "status": "OPEN",
+      "escalation_level": 0,
+      "assigned_staff_id": null,
+      "created_at": "2026-10-25T18:22:32.165Z",
+      "updated_at": "2026-10-25T18:22:32.165Z",
+      "resolved_at": null
+    },
+    {
+      "id": "31e796b2-b27c-45f1-9db3-4b0506e3253d",
+      "student_id": "d0000000-0000-0000-0000-000000000001",
+      "category_id": 4,
+      "description": "Cleaning and is not done properly and it was late than usual\n",
+      "photo_url": null,
+      "status": "OPEN",
+      "escalation_level": 0,
+      "assigned_staff_id": null,
+      "created_at": "2026-10-25T18:02:48.604Z",
+      "updated_at": "2026-10-25T18:02:48.604Z",
+      "resolved_at": null
+    },
+    {
       "id": "e5a272d6-cf89-4c3e-9361-2aadd185b2e1",
       "student_id": "d0000000-0000-0000-0000-000000000001",
       "category_id": 6,
       "description": "Study table leg collapsed and computer desk is wobbly",
       "photo_url": null,
-      "status": "REOPENED",
+      "status": "RESOLVED_PENDING",
       "escalation_level": 0,
       "assigned_staff_id": "d0000000-0000-0000-0000-000000000002",
       "created_at": "2026-10-06T02:10:45.504Z",
-      "updated_at": "2026-10-06T14:10:45.504Z",
-      "resolved_at": null
+      "updated_at": "2026-10-08T07:02:48.084Z",
+      "resolved_at": "2026-10-08T07:02:48.084Z"
     },
     {
       "id": "87c79879-6286-4736-8ce7-ada5cf7f4a1d",
@@ -104,10 +143,10 @@
       "description": "Main corridor tube light flickering and buzzing continuously",
       "photo_url": null,
       "status": "OPEN",
-      "escalation_level": 0,
+      "escalation_level": 2,
       "assigned_staff_id": "d0000000-0000-0000-0000-000000000002",
       "created_at": "2026-10-06T13:10:45.504Z",
-      "updated_at": "2026-10-06T13:10:45.504Z",
+      "updated_at": "2026-10-25T17:30:00.525Z",
       "resolved_at": null
     },
     {
@@ -117,10 +156,10 @@
       "description": "Laundry issue : The clothes which are washed from the laundry are not completely cleaned still some of the stain remains on the clothes",
       "photo_url": null,
       "status": "IN_PROGRESS",
-      "escalation_level": 2,
+      "escalation_level": 4,
       "assigned_staff_id": "d0000000-0000-0000-0000-000000000002",
       "created_at": "2026-10-04T12:10:45.504Z",
-      "updated_at": "2026-10-06T08:10:45.504Z",
+      "updated_at": "2026-10-25T17:30:00.528Z",
       "resolved_at": null
     },
     {
@@ -129,11 +168,11 @@
       "category_id": 6,
       "description": "Study table leg collapsed and computer desk is wobbly",
       "photo_url": null,
-      "status": "REOPENED",
+      "status": "IN_PROGRESS",
       "escalation_level": 0,
       "assigned_staff_id": "d0000000-0000-0000-0000-000000000002",
       "created_at": "2026-10-06T00:10:45.504Z",
-      "updated_at": "2026-10-06T12:10:45.504Z",
+      "updated_at": "2026-10-25T18:04:22.045Z",
       "resolved_at": null
     },
     {
@@ -142,12 +181,12 @@
       "category_id": 1,
       "description": "Ceiling fan sparking and vibrating dangerously on speed 3",
       "photo_url": "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80",
-      "status": "IN_PROGRESS",
-      "escalation_level": 0,
+      "status": "RESOLVED_PENDING",
+      "escalation_level": 1,
       "assigned_staff_id": "d0000000-0000-0000-0000-000000000002",
       "created_at": "2026-10-05T22:10:45.504Z",
-      "updated_at": "2026-10-06T06:10:45.504Z",
-      "resolved_at": null
+      "updated_at": "2026-10-25T17:29:12.113Z",
+      "resolved_at": "2026-10-25T17:29:12.113Z"
     },
     {
       "id": "c0000000-0000-0000-0000-000000000002",
@@ -155,12 +194,12 @@
       "category_id": 2,
       "description": "Wash basin pipe leaking continuously under sink, soaking floor",
       "photo_url": null,
-      "status": "OPEN",
-      "escalation_level": 1,
-      "assigned_staff_id": null,
+      "status": "RESOLVED_PENDING",
+      "escalation_level": 2,
+      "assigned_staff_id": "d0000000-0000-0000-0000-000000000002",
       "created_at": "2026-10-05T12:10:45.504Z",
-      "updated_at": "2026-10-06T12:10:45.504Z",
-      "resolved_at": null
+      "updated_at": "2026-10-25T17:28:29.498Z",
+      "resolved_at": "2026-10-25T17:28:29.498Z"
     },
     {
       "id": "c0000000-0000-0000-0000-000000000003",
@@ -531,6 +570,242 @@
       "changed_by": "d0000000-0000-0000-0000-000000000001",
       "note": "Student verified repair in room and accepted resolution.",
       "timestamp": "2026-10-06T16:25:38.532Z"
+    },
+    {
+      "id": "ce747c34-f175-4e63-a694-10b1519fb92c",
+      "complaint_id": "e5a272d6-cf89-4c3e-9361-2aadd185b2e1",
+      "old_status": "REOPENED",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Picked up by maintenance technician",
+      "timestamp": "2026-10-08T07:02:05.174Z"
+    },
+    {
+      "id": "170de68d-bb26-4851-9f7e-a36cc60eda53",
+      "complaint_id": "e5a272d6-cf89-4c3e-9361-2aadd185b2e1",
+      "old_status": "IN_PROGRESS",
+      "new_status": "RESOLVED_PENDING",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Work completed, submitted for student verification",
+      "timestamp": "2026-10-08T07:02:48.084Z"
+    },
+    {
+      "id": "6b75e3a5-0a9c-477a-8fcd-7eb47c2e7b3c",
+      "complaint_id": "87c79879-6286-4736-8ce7-ada5cf7f4a1d",
+      "old_status": "OPEN",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 1. Flagged for Admin Warden.",
+      "timestamp": "2026-10-09T16:15:27.994Z"
+    },
+    {
+      "id": "c7796571-c031-4cec-be18-bd9ed77c84d8",
+      "complaint_id": "be0b923f-2cbb-44d8-85cb-ed5db1ce85f8",
+      "old_status": "IN_PROGRESS",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 3. Flagged for Admin Warden.",
+      "timestamp": "2026-10-09T16:15:27.998Z"
+    },
+    {
+      "id": "2449b3eb-f01f-4edc-ac23-88a99b17ad94",
+      "complaint_id": "c0000000-0000-0000-0000-000000000001",
+      "old_status": "IN_PROGRESS",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 1. Flagged for Admin Warden.",
+      "timestamp": "2026-10-09T16:15:28.002Z"
+    },
+    {
+      "id": "78680e75-1a8c-4e50-b589-49fb7156c3c5",
+      "complaint_id": "c0000000-0000-0000-0000-000000000002",
+      "old_status": "OPEN",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 2. Flagged for Admin Warden.",
+      "timestamp": "2026-10-09T16:15:28.006Z"
+    },
+    {
+      "id": "f44221d8-ccf3-4667-807d-df97ffe52720",
+      "complaint_id": "c0000000-0000-0000-0000-000000000002",
+      "old_status": "OPEN",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Status changed to IN_PROGRESS",
+      "timestamp": "2026-10-25T17:27:53.647Z"
+    },
+    {
+      "id": "e9ad9ba1-21e3-44a8-b0bb-ad3ba97ba826",
+      "complaint_id": "c0000000-0000-0000-0000-000000000002",
+      "old_status": "IN_PROGRESS",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Status changed to OPEN",
+      "timestamp": "2026-10-25T17:28:05.344Z"
+    },
+    {
+      "id": "cb4e499e-e182-4870-9003-0e373616063a",
+      "complaint_id": "c0000000-0000-0000-0000-000000000002",
+      "old_status": "OPEN",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Status changed to IN_PROGRESS",
+      "timestamp": "2026-10-25T17:28:09.294Z"
+    },
+    {
+      "id": "9078f7ee-030d-40e7-a252-1ae666f84adc",
+      "complaint_id": "c0000000-0000-0000-0000-000000000002",
+      "old_status": "IN_PROGRESS",
+      "new_status": "RESOLVED_PENDING",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Status changed to RESOLVED_PENDING",
+      "timestamp": "2026-10-25T17:28:29.498Z"
+    },
+    {
+      "id": "d639931e-1f2d-4f76-b87e-6d3f22af821e",
+      "complaint_id": "c0000000-0000-0000-0000-000000000001",
+      "old_status": "IN_PROGRESS",
+      "new_status": "RESOLVED_PENDING",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Status changed to RESOLVED_PENDING",
+      "timestamp": "2026-10-25T17:29:12.113Z"
+    },
+    {
+      "id": "b31459fb-6de1-4875-908d-1a7981d827b4",
+      "complaint_id": "87c79879-6286-4736-8ce7-ada5cf7f4a1d",
+      "old_status": "OPEN",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 2. Flagged for Admin Warden.",
+      "timestamp": "2026-10-25T17:30:00.525Z"
+    },
+    {
+      "id": "1742fa0f-a20e-493d-a40f-94fd8cdbc0b9",
+      "complaint_id": "be0b923f-2cbb-44d8-85cb-ed5db1ce85f8",
+      "old_status": "IN_PROGRESS",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000003",
+      "note": "[AUTO-ESCALATION] Unresolved for >24h without update. Escalated to Level 4. Flagged for Admin Warden.",
+      "timestamp": "2026-10-25T17:30:00.528Z"
+    },
+    {
+      "id": "e36cb62a-24dd-4a58-a168-9d8162aca014",
+      "complaint_id": "31e796b2-b27c-45f1-9db3-4b0506e3253d",
+      "old_status": "NONE",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000001",
+      "note": "Complaint submitted by student",
+      "timestamp": "2026-10-25T18:02:48.604Z"
+    },
+    {
+      "id": "807070d2-1ed6-491a-828c-ab99fa3794cb",
+      "complaint_id": "e34c0385-f70b-4900-a198-deb14fa9855a",
+      "old_status": "REOPENED",
+      "new_status": "IN_PROGRESS",
+      "changed_by": "d0000000-0000-0000-0000-000000000002",
+      "note": "Technician commenced urgent re-inspection of disputed repair",
+      "timestamp": "2026-10-25T18:04:22.045Z"
+    },
+    {
+      "id": "9d00bc94-f155-4b59-8432-f5855b1b9afd",
+      "complaint_id": "de2cbdb0-72cf-4417-af6d-2f595432f57b",
+      "old_status": "NONE",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000001",
+      "note": "Complaint submitted by student",
+      "timestamp": "2026-10-25T18:22:32.165Z"
+    },
+    {
+      "id": "dd8df2ea-096e-4c56-97cf-7576f1498558",
+      "complaint_id": "2558fea6-5676-41d5-b042-a912f81a8d8d",
+      "old_status": "NONE",
+      "new_status": "OPEN",
+      "changed_by": "d0000000-0000-0000-0000-000000000001",
+      "note": "Complaint submitted by student",
+      "timestamp": "2026-10-25T18:24:08.941Z"
     }
-  ]
+  ],
+  "notifications": [
+    {
+      "id": "notif-student-1792952648941",
+      "recipient_id": "d0000000-0000-0000-0000-000000000001",
+      "recipient_roles": [
+        "STUDENT"
+      ],
+      "complaint_id": "2558fea6-5676-41d5-b042-a912f81a8d8d",
+      "type": "COMPLAINT_REGISTERED",
+      "title": "Complaint Registered",
+      "message": "Your Cleaning request was logged under 24h SLA.",
+      "created_at": "2026-10-25T18:24:08.941Z",
+      "read": false,
+      "read_by": [
+        "d0000000-0000-0000-0000-000000000003"
+      ]
+    },
+    {
+      "id": "notif-1792952648941",
+      "recipient_roles": [
+        "STAFF",
+        "ADMIN"
+      ],
+      "complaint_id": "2558fea6-5676-41d5-b042-a912f81a8d8d",
+      "type": "NEW_INCIDENT",
+      "title": "New Incident Filed",
+      "message": "New Cleaning complaint filed: \"Trash disposal overflow in Block B floor 2\" (B-204).",
+      "created_at": "2026-10-25T18:24:08.941Z",
+      "read": false,
+      "read_by": [
+        "d0000000-0000-0000-0000-000000000003"
+      ]
+    },
+    {
+      "id": "n0000000-0000-0000-0000-000000000001",
+      "type": "SLA_BREACH",
+      "title": "24h SLA Breached",
+      "message": "Room B-204 wash basin pipe leak breached 24h SLA. Escalation level raised to 1.",
+      "complaint_id": "c0000000-0000-0000-0000-000000000002",
+      "created_at": "2026-10-25T06:03:12.083Z",
+      "read_by": [
+        "d0000000-0000-0000-0000-000000000003"
+      ]
+    },
+    {
+      "id": "n0000000-0000-0000-0000-000000000002",
+      "type": "NEW_COMPLAINT",
+      "title": "New Incident Filed",
+      "message": "New electrical complaint filed: Ceiling fan sparking on speed 3 (Room B-204).",
+      "complaint_id": "c0000000-0000-0000-0000-000000000001",
+      "created_at": "2026-10-25T00:03:12.083Z",
+      "read_by": [
+        "d0000000-0000-0000-0000-000000000003"
+      ]
+    }
+  ],
+  "ai_summary_cache": {
+    "cached_at": "2026-10-25T18:25:32.788Z",
+    "ticket_hash": "37eebf83c148bd234b6c742614ebe0b2",
+    "digest_content": {
+      "headline": "Synthesized telemetry: 3 complaints recorded in the past 7 days across campus units; all active categories remain compliant with 24h SLA targets.",
+      "top_issues": [
+        "CLEANING: 3 complaints"
+      ],
+      "hot_rooms": [
+        "B-204: 3"
+      ],
+      "avg_resolution_hours_by_category": {
+        "electrical": 0,
+        "plumbing": 0,
+        "mess": 0,
+        "cleaning": 0,
+        "internet": 0,
+        "furniture": 0,
+        "other": 0
+      },
+      "recommendation": "Deploy primary maintenance technicians to address cleaning backlog and audit rooms with repeat tickets (B-204: 3).",
+      "complaint_sample_size": 3,
+      "generated_at": "2026-10-25T18:25:32.785Z",
+      "ticket_hash": "37eebf83c148bd234b6c742614ebe0b2",
+      "cached": false
+    }
+  }
 }
